@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="referrer" content="no-referrer">
 <title>TPLAY — Short Drama</title>
+<!-- Video.js Stylesheet -->
+<link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
 <style>
 :root{color-scheme:dark;--bg:#070707;--surface:#101010;--surface2:#171717;--text:#f6f6f6;--muted:#969696;--line:#242424;--accent:#ff315d;--accent2:#ff8a3d;--shadow:0 24px 70px rgba(0,0,0,.45)}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#070707;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input{font:inherit}button{cursor:pointer;border:0}.app{min-height:100vh;background:radial-gradient(circle at 72% 0%,rgba(255,49,93,.13),transparent 30%),#070707}.nav{height:72px;display:flex;align-items:center;gap:28px;padding:0 5%;position:sticky;top:0;z-index:20;background:linear-gradient(#070707f2,#070707d9,transparent);backdrop-filter:blur(16px)}.brand{font-weight:900;letter-spacing:-1.5px;font-size:23px;cursor:pointer}.brand i{font-style:normal;color:var(--accent)}.navlinks{display:flex;gap:22px;color:#aaa;font-size:14px}.navlinks button{background:none;color:inherit}.navlinks button.active,.navlinks button:hover{color:#fff}.spacer{flex:1}.search{width:230px;height:38px;border:1px solid #292929;border-radius:999px;background:#101010;display:flex;align-items:center;padding:0 13px;gap:8px}.search input{width:100%;border:0;outline:0;background:none;color:#fff;font-size:13px}.search span{color:#777}.avatar{width:35px;height:35px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ff315d,#8e2cff);font-size:13px;font-weight:800}
@@ -20,7 +22,7 @@ main{padding:0 5% 70px;position:relative;z-index:3}.section{margin-top:25px}.sec
 /* PLAYER CSS */
 .player{width:min(1050px,100%);background:#000;border-radius:14px;overflow:hidden;border:1px solid #262626;display:flex;flex-direction:column;max-height:95vh;}
 .screen{width:100%;flex:1;min-height:50vh;background:#000;position:relative;display:flex;justify-content:center;align-items:center;}.screen:before{content:"TPLAY";position:absolute;top:18px;left:20px;font-weight:900;letter-spacing:1px;z-index:10;color:rgba(255,255,255,0.4)}
-.screen video{width:100%;height:100%;object-fit:contain;outline:none;}
+.screen video, .screen .video-js{width:100%!important;height:100%!important;position:absolute;inset:0;object-fit:contain;}
 .nav-ep{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.6);color:#fff;border:none;width:44px;height:44px;border-radius:50%;font-size:18px;display:grid;place-items:center;cursor:pointer;z-index:20;backdrop-filter:blur(4px);transition:0.2s}
 .nav-ep:hover{background:var(--accent)}
 .nav-ep.left{left:15px}
@@ -30,8 +32,8 @@ main{padding:0 5% 70px;position:relative;z-index:3}.section{margin-top:25px}.sec
 .player-eps::-webkit-scrollbar{height:4px;}
 .player-eps::-webkit-scrollbar-thumb{background:#333;border-radius:4px;}
 
-.player-modes{display:flex;gap:6px;}
-.pmode{background:#151515;border:1px solid #333;color:#aaa;padding:5px 10px;border-radius:5px;font-size:10px;font-weight:700;}
+.player-modes{display:flex;gap:5px;flex-wrap:wrap;}
+.pmode{background:#151515;border:1px solid #333;color:#aaa;padding:5px 8px;border-radius:5px;font-size:10px;font-weight:700;}
 .pmode.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 
 .pep{flex:none;padding:8px 14px;background:#151515;border:1px solid #252525;border-radius:6px;color:#aaa;font-size:11px;font-weight:600;}
@@ -42,10 +44,7 @@ main{padding:0 5% 70px;position:relative;z-index:3}.section{margin-top:25px}.sec
 
 footer{border-top:1px solid #181818;padding:28px 5%;color:#666;font-size:11px;display:flex;justify-content:space-between}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:#fff;color:#080808;padding:10px 14px;border-radius:8px;font-size:12px;font-weight:700;opacity:0;transition:.2s;z-index:100}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-video::-webkit-media-text-track-container {
-  bottom: 22% !important;
-  font-size: 16px !important;
-}
+video::-webkit-media-text-track-container { bottom: 22% !important; font-size: 16px !important; }
 
 @media(max-width:900px){.row{grid-template-columns:repeat(4,minmax(0,1fr))}.detail{grid-template-columns:180px 1fr}.ep-grid{grid-template-columns:repeat(6,1fr)}}
 @media(max-width:650px){
@@ -95,7 +94,7 @@ video::-webkit-media-text-track-container {
   <section class="section" id="trendingSec"><div class="section-head"><h2 id="trendingTitle">🔥 Sedang Trending</h2><span class="more" onclick="showAllTrending()">Lihat semua →</span></div><div class="row" id="trendingRow"></div></section>
   <section class="section"><div class="section-head"><h2>▶ Lanjut Nonton</h2><span class="more">Riwayat kamu</span></div><div class="continue"><div class="mini" style="--art:linear-gradient(145deg,#1d263f,#ad3858 55%,#f3b37d)"></div><div class="continue-info"><strong>The Contract Wife</strong><p>Episode 14 · tersisa 08:42</p><div class="progress"><i></i></div></div></div></section>
   <section class="section" id="latestSec"><div class="section-head"><h2 id="latestTitle">✨ Drama Terbaru</h2><span class="more">Update hari ini</span></div><div class="row" id="latestRow"></div><div class="empty" id="empty">Drama tidak ditemukan.</div><div id="loading" style="display:none;color:#777;font-size:11px;padding:18px 0">Memuat katalog…</div></section>
-  <section class="section" id="forYouSec"><div class="section-head"><h2>💗 Untuk Kamu</h2><span class="more">Berdasarkan tontonanmu</span></div><div class="row" id="forYouRow"></div></section>
+  <section class="section"><div class="section-head"><h2>💗 Untuk Kamu</h2><span class="more">Berdasarkan tontonanmu</span></div><div class="row" id="forYouRow"></div></section>
 </div>
 
 <div id="allContent" style="display:none;">
@@ -117,7 +116,11 @@ video::-webkit-media-text-track-container {
   <div class="player">
     <button class="close" onclick="closeModal('#playerModal')">×</button>
     <div class="screen">
-      <video id="video" playsinline controls></video>
+      <!-- Tag video standar untuk Player 1 & 2 -->
+      <video id="video" playsinline controls style="display:block;"></video>
+      <!-- Tag video khusus untuk Player 3 (Video.js) -->
+      <video id="videojs-player" class="video-js vjs-big-play-centered" playsinline style="display:none;"></video>
+
       <button id="btnPrevEp" class="nav-ep left" onclick="playPrevEp()" style="display:none;">❮</button>
       <button id="btnNextEp" class="nav-ep right" onclick="playNextEp()" style="display:none;">❯</button>
     </div>
@@ -127,6 +130,7 @@ video::-webkit-media-text-track-container {
       <div class="player-modes">
         <button class="pmode active" id="modeHls" onclick="setPlayerMode('hls')">Player 1 (HLS)</button>
         <button class="pmode" id="modeNative" onclick="setPlayerMode('native')">Player 2 (Direct)</button>
+        <button class="pmode" id="modeVjs" onclick="setPlayerMode('vjs')">Player 3 (Video.js)</button>
       </div>
     </div>
     
@@ -136,16 +140,19 @@ video::-webkit-media-text-track-container {
 </div>
 <div class="toast" id="toast"></div>
 
+<!-- HLS.js & Video.js Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 
 <script>
 const API='/api/quickplay';
 const providers=['meloshort', 'freereels', 'stardusttv', 'microdrama', 'reelshort'];
 let provider='meloshort', currentDrama=null, currentEpisodes=[], currentIndex=0, searchTimer;
 let globalMasterList = [];
-let currentPlayerMode = 'hls';
+let currentPlayerMode = 'hls'; // 'hls', 'native', atau 'vjs'
 let currentStreamUrl = '';
 let currentSubUrl = '';
+let vjsPlayerInstance = null;
 
 const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 async function api(path,params={}){const u=new URL(API,location.origin);u.searchParams.set('path','/api/v2/'+path);Object.entries(params).forEach(([k,v])=>v!=null&&u.searchParams.set(k,v));const r=await fetch(u);if(!r.ok)throw Error('API '+r.status);return r.json()}
@@ -153,7 +160,6 @@ function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');cl
 function art(title='Drama'){let h=0;for(const c of title)h=(h*31+c.charCodeAt(0))>>>0;return `linear-gradient(145deg,hsl(${h%360} 35% 12%),hsl(${(h+55)%360} 55% 34%) 52%,hsl(${(h+110)%360} 62% 66%))`}
 function normalize(x){return [x.title||x.name||'Untitled',x.genres?.[0]||x.genre||'Drama',x.cover||x.poster||'',x.id||x.drama_id||'',x.total_episodes||x.chapters||x.episodes_count||0,x.synopsis||x.desc||'',x.status||'Ongoing',x.views||'']}
 
-/* PARSER FLEKSIBEL UNTUK MENANGKAP BERBAGAI STRUKTUR RESPON API */
 function extractList(r) {
   if (!r) return [];
   if (Array.isArray(r)) return r;
@@ -312,9 +318,11 @@ function setPlayerMode(mode) {
   currentPlayerMode = mode;
   document.querySelectorAll('.pmode').forEach(b => b.classList.remove('active'));
   if(mode === 'hls') $('#modeHls').classList.add('active');
-  else $('#modeNative').classList.add('active');
+  else if(mode === 'native') $('#modeNative').classList.add('active');
+  else $('#modeVjs').classList.add('active');
   
-  toast(`Beralih ke ${mode === 'hls' ? 'Player 1 (HLS)' : 'Player 2 (Direct)'}`);
+  const names = { hls: 'Player 1 (HLS)', native: 'Player 2 (Direct)', vjs: 'Player 3 (Video.js)' };
+  toast(`Beralih ke ${names[mode]}`);
   if (currentStreamUrl) initPlayerStream(currentStreamUrl, currentSubUrl);
 }
 
@@ -366,51 +374,89 @@ async function playEpisode(i){
 }
 
 function initPlayerStream(videoUrl, subUrl) {
-  const v=$('#video');
   const loader = $('#loadingBar');
   loader.style.visibility = 'visible';
 
-  v.poster = currentDrama.cover||'';
-  v.controls = true;
-  v.onended = () => { playNextEp(); };
+  const v = $('#video');
+  const vjsEl = $('#videojs-player');
 
+  // Bersihkan pemutar sebelumnya
   if (window.hlsPlayer) { window.hlsPlayer.destroy(); window.hlsPlayer = null; }
+  if (vjsPlayerInstance) { vjsPlayerInstance.dispose(); vjsPlayerInstance = null; }
   v.querySelectorAll('track').forEach(track => track.remove());
 
-  if (currentPlayerMode === 'hls' && videoUrl.includes('.m3u8') && typeof Hls !== 'undefined' && Hls.isSupported()) {
-    const hls = new Hls({ maxBufferLength: 30, enableWorker: true });
-    window.hlsPlayer = hls; 
-    hls.loadSource(videoUrl);
-    hls.attachMedia(v);
-    
-    hls.on(Hls.Events.MANIFEST_PARSED, function() {
-      loader.style.visibility = 'hidden';
-      v.play().catch(()=>{});
-    });
-    
-    hls.on(Hls.Events.ERROR, function (event, data) {
-      if (data.fatal) {
-        switch (data.type) {
-          case Hls.ErrorTypes.NETWORK_ERROR: hls.startLoad(); break;
-          case Hls.ErrorTypes.MEDIA_ERROR: hls.recoverMediaError(); break;
-          default: hls.destroy(); loader.style.visibility = 'hidden'; break;
-        }
-      }
-    });
-  } else {
-    v.src = videoUrl;
-    v.addEventListener('loadeddata', () => { loader.style.visibility = 'hidden'; }, {once:true});
-    v.play().catch(()=>{});
-  }
+  if (currentPlayerMode === 'vjs') {
+    // Mode Player 3: Video.js
+    v.style.display = 'none';
+    vjsEl.style.display = 'block';
 
-  if(subUrl){
-    const tr = document.createElement('track');
-    tr.kind = 'subtitles';
-    tr.label = 'Indonesia';
-    tr.srclang = 'id';
-    tr.src = subUrl;
-    tr.default = true;
-    v.appendChild(tr);
+    vjsPlayerInstance = videojs('videojs-player', {
+      autoplay: true,
+      controls: true,
+      fluid: true,
+      poster: currentDrama.cover || '',
+      sources: [{ src: videoUrl, type: videoUrl.includes('.m3u8') ? 'application/x-mpegURL' : 'video/mp4' }]
+    });
+
+    if (subUrl) {
+      vjsPlayerInstance.addRemoteTextTrack({
+        kind: 'subtitles',
+        label: 'Indonesia',
+        srclang: 'id',
+        src: subUrl,
+        default: true
+      }, false);
+    }
+
+    vjsPlayerInstance.ready(() => {
+      loader.style.visibility = 'hidden';
+      vjsPlayerInstance.play().catch(()=>{});
+    });
+
+  } else {
+    // Mode Player 1 (HLS) & Player 2 (Direct)
+    vjsEl.style.display = 'none';
+    v.style.display = 'block';
+
+    v.poster = currentDrama.cover || '';
+    v.controls = true;
+    v.onended = () => { playNextEp(); };
+
+    if (currentPlayerMode === 'hls' && videoUrl.includes('.m3u8') && typeof Hls !== 'undefined' && Hls.isSupported()) {
+      const hls = new Hls({ maxBufferLength: 30, enableWorker: true });
+      window.hlsPlayer = hls; 
+      hls.loadSource(videoUrl);
+      hls.attachMedia(v);
+      
+      hls.on(Hls.Events.MANIFEST_PARSED, function() {
+        loader.style.visibility = 'hidden';
+        v.play().catch(()=>{});
+      });
+      
+      hls.on(Hls.Events.ERROR, function (event, data) {
+        if (data.fatal) {
+          switch (data.type) {
+            case Hls.ErrorTypes.NETWORK_ERROR: hls.startLoad(); break;
+            case Hls.ErrorTypes.MEDIA_ERROR: hls.recoverMediaError(); break;
+            default: hls.destroy(); loader.style.visibility = 'hidden'; break;
+          }
+        }
+      });
+    } else {
+      v.src = videoUrl;
+      v.addEventListener('loadeddata', () => { loader.style.visibility = 'hidden'; }, {once:true});
+      v.play().catch(()=>{});
+    }
+
+    if (subUrl) {
+      const tr = document.createElement('track');
+      tr.kind = 'subtitles';
+      tr.label = 'Indonesia';
+      tr.srclang = 'id';
+      tr.src = subUrl;
+      tr.default = true;
+      v.appendChild(tr);
+    }
   }
 }
 
@@ -423,6 +469,7 @@ function closeModal(id){
     v.onended = null;
     $('#loadingBar').style.visibility = 'hidden';
     if (window.hlsPlayer) { window.hlsPlayer.destroy(); window.hlsPlayer = null; }
+    if (vjsPlayerInstance) { vjsPlayerInstance.dispose(); vjsPlayerInstance = null; }
   }
 }
 
