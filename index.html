@@ -7,19 +7,57 @@
 <style>
 :root{color-scheme:dark;--bg:#070707;--surface:#101010;--surface2:#171717;--text:#f6f6f6;--muted:#969696;--line:#242424;--accent:#ff315d;--accent2:#ff8a3d;--shadow:0 24px 70px rgba(0,0,0,.45)}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#070707;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input{font:inherit}button{cursor:pointer;border:0}.app{min-height:100vh;background:radial-gradient(circle at 72% 0%,rgba(255,49,93,.13),transparent 30%),#070707}.nav{height:72px;display:flex;align-items:center;gap:28px;padding:0 5%;position:sticky;top:0;z-index:20;background:linear-gradient(#070707f2,#070707d9,transparent);backdrop-filter:blur(16px)}.brand{font-weight:900;letter-spacing:-1.5px;font-size:23px}.brand i{font-style:normal;color:var(--accent)}.navlinks{display:flex;gap:22px;color:#aaa;font-size:14px}.navlinks button{background:none;color:inherit}.navlinks button.active,.navlinks button:hover{color:#fff}.spacer{flex:1}.search{width:230px;height:38px;border:1px solid #292929;border-radius:999px;background:#101010;display:flex;align-items:center;padding:0 13px;gap:8px}.search input{width:100%;border:0;outline:0;background:none;color:#fff;font-size:13px}.search span{color:#777}.avatar{width:35px;height:35px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ff315d,#8e2cff);font-size:13px;font-weight:800}
-.hero{min-height:570px;padding:65px 5% 70px;display:flex;align-items:end;position:relative;overflow:hidden;background:radial-gradient(circle at 75% 36%,rgba(255,49,93,.34),transparent 18%),linear-gradient(90deg,#070707 0%,#070707d8 39%,#07070744 72%,#070707 100%)}.hero:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 75% 45%,rgba(255,88,66,.18),transparent 34%),linear-gradient(90deg,#070707 0%,transparent 65%),linear-gradient(0deg,#070707 0%,transparent 42%);pointer-events:none}.hero-art{position:absolute;inset:0;overflow:hidden;opacity:.9}.hero-orb{position:absolute;width:470px;height:600px;right:7%;top:10px;border-radius:46% 54% 52% 48%;background:radial-gradient(circle at 35% 28%,#ffcf9e 0 4%,transparent 4.5%),radial-gradient(circle at 52% 28%,#ffb37d 0 3%,transparent 3.5%),linear-gradient(150deg,#e02d48,#5d183d 46%,#17102a 75%);filter:saturate(.95);transform:rotate(7deg);box-shadow:-40px 30px 130px rgba(255,49,93,.24)}.hero-orb:before{content:"";position:absolute;left:18%;top:18%;width:55%;height:30%;border-radius:50%;background:rgba(30,12,20,.75);transform:rotate(-12deg)}.hero-orb:after{content:"DRAMA";position:absolute;right:-7%;bottom:16%;font-size:75px;font-weight:1000;letter-spacing:-6px;color:#ffffff18;transform:rotate(-72deg)}.hero-copy{position:relative;z-index:2;max-width:590px}.eyebrow{font-size:11px;letter-spacing:2.8px;color:#ff718d;font-weight:800;text-transform:uppercase;margin-bottom:17px}.hero h1{font-size:clamp(42px,6vw,76px);line-height:.94;letter-spacing:-4px;margin:0 0 20px;max-width:650px}.hero p{color:#b4b4b4;line-height:1.7;font-size:14px;max-width:530px;margin:0 0 24px}.meta{display:flex;align-items:center;gap:12px;color:#bbb;font-size:12px;margin-bottom:25px}.pill{padding:4px 8px;border:1px solid #333;border-radius:5px;color:#ddd}.actions{display:flex;gap:10px}.primary{background:#fff;color:#080808;padding:12px 19px;border-radius:9px;font-weight:800}.secondary{background:#191919;color:#fff;padding:12px 19px;border-radius:9px;border:1px solid #2c2c2c}.primary:hover{background:#eee}.secondary:hover{background:#232323}
+
+/* HERO SECTION CSS UPDATE */
+.hero{min-height:570px;padding:65px 5% 70px;display:flex;align-items:end;position:relative;overflow:hidden;background:radial-gradient(circle at 75% 36%,rgba(255,49,93,.34),transparent 18%),linear-gradient(90deg,#070707 0%,#070707d8 39%,#07070744 72%,#070707 100%)}.hero:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 75% 45%,rgba(255,88,66,.18),transparent 34%),linear-gradient(90deg,#070707 0%,transparent 65%),linear-gradient(0deg,#070707 0%,transparent 42%);pointer-events:none}.hero-art{position:absolute;inset:0;overflow:hidden;opacity:.9;transition:background 0.5s ease;background-position:center top;background-size:cover;}.hero-orb{position:absolute;width:470px;height:600px;right:7%;top:10px;border-radius:46% 54% 52% 48%;background:radial-gradient(circle at 35% 28%,#ffcf9e 0 4%,transparent 4.5%),radial-gradient(circle at 52% 28%,#ffb37d 0 3%,transparent 3.5%),linear-gradient(150deg,#e02d48,#5d183d 46%,#17102a 75%);filter:saturate(.95);transform:rotate(7deg);box-shadow:-40px 30px 130px rgba(255,49,93,.24)}.hero-orb:before{content:"";position:absolute;left:18%;top:18%;width:55%;height:30%;border-radius:50%;background:rgba(30,12,20,.75);transform:rotate(-12deg)}.hero-orb:after{content:"DRAMA";position:absolute;right:-7%;bottom:16%;font-size:75px;font-weight:1000;letter-spacing:-6px;color:#ffffff18;transform:rotate(-72deg)}.hero-copy{position:relative;z-index:2;max-width:590px}.eyebrow{font-size:11px;letter-spacing:2.8px;color:#ff718d;font-weight:800;text-transform:uppercase;margin-bottom:17px}.hero h1{font-size:clamp(32px,5vw,66px);line-height:1;letter-spacing:-3px;margin:0 0 20px;max-width:650px;text-shadow:0 4px 20px rgba(0,0,0,0.8)}.hero p{color:#ddd;line-height:1.7;font-size:14px;max-width:530px;margin:0 0 24px;text-shadow:0 2px 10px rgba(0,0,0,0.8)}.meta{display:flex;align-items:center;gap:12px;color:#bbb;font-size:12px;margin-bottom:25px}.pill{padding:4px 8px;border:1px solid #555;border-radius:5px;color:#eee;background:rgba(0,0,0,0.5)}.actions{display:flex;gap:10px}.primary{background:#fff;color:#080808;padding:12px 19px;border-radius:9px;font-weight:800;box-shadow:0 4px 15px rgba(255,255,255,0.2)}.secondary{background:rgba(25,25,25,0.7);backdrop-filter:blur(10px);color:#fff;padding:12px 19px;border-radius:9px;border:1px solid #444}.primary:hover{background:#eee}.secondary:hover{background:rgba(40,40,40,0.9)}
 main{padding:0 5% 70px;position:relative;z-index:3}.section{margin-top:25px}.section-head{display:flex;align-items:center;justify-content:space-between;margin:30px 0 15px}.section h2{font-size:18px;letter-spacing:-.4px;margin:0}.more{font-size:12px;color:#888}.row{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}.card{min-width:0;position:relative;transition:.22s transform}.card:hover{transform:translateY(-5px)}.poster{aspect-ratio:2/3;border-radius:9px;overflow:hidden;position:relative;background:#222;box-shadow:0 12px 35px rgba(0,0,0,.28)}.poster:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.72),transparent 42%)}.poster-art{position:absolute;inset:0;background:var(--art);}.poster-title{position:absolute;left:11px;right:9px;bottom:10px;z-index:2;font-size:14px;font-weight:900;line-height:1.05;letter-spacing:-.3px;text-shadow:0 2px 12px #000}.tag{position:absolute;top:8px;left:8px;z-index:3;background:#ffffffec;color:#080808;padding:4px 6px;border-radius:5px;font-size:9px;font-weight:900}.rating{position:absolute;right:8px;top:8px;z-index:3;background:#080808b8;padding:4px 6px;border-radius:5px;font-size:9px}.card-info{padding:9px 1px 0}.card-info strong{font-size:12px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card-info small{color:#777;font-size:10px}.continue{display:flex;gap:13px;padding:13px;background:#101010;border:1px solid #202020;border-radius:11px}.continue .mini{width:62px;aspect-ratio:2/3;border-radius:6px;background:var(--art);flex:none}.continue-info{min-width:0}.continue-info strong{font-size:13px}.continue-info p{margin:5px 0 8px;color:#777;font-size:10px}.progress{height:3px;background:#2a2a2a;border-radius:9px;overflow:hidden}.progress i{display:block;width:62%;height:100%;background:var(--accent)}
 .platforms{display:flex;gap:8px;overflow:auto;padding-bottom:5px}.platform{white-space:nowrap;background:#111;border:1px solid #242424;color:#aaa;border-radius:999px;padding:8px 13px;font-size:11px}.platform.active{background:#fff;color:#080808;border-color:#fff}.empty{padding:50px;text-align:center;color:#777;display:none}
-.modal{position:fixed;inset:0;background:#000b;backdrop-filter:blur(18px);z-index:50;display:none;align-items:center;justify-content:center;padding:25px}.modal.show{display:flex}.dialog{width:min(1050px,100%);max-height:92vh;overflow:auto;background:#0d0d0d;border:1px solid #262626;border-radius:16px;box-shadow:var(--shadow);position:relative}.close{position:absolute;right:15px;top:15px;width:36px;height:36px;border-radius:50%;background:#171717;color:#fff;z-index:5}.detail{display:grid;grid-template-columns:280px 1fr;gap:30px;padding:30px}.detail-poster{aspect-ratio:2/3;border-radius:10px;background:var(--art);background-size:cover}.detail h2{font-size:35px;letter-spacing:-1.7px;margin:30px 0 12px}.detail p{color:#999;line-height:1.7;font-size:13px}.chips{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0}.chip{border:1px solid #2b2b2b;border-radius:5px;padding:5px 8px;color:#aaa;font-size:10px}.episodes{border-top:1px solid #242424;padding:20px 30px 30px}.episodes h3{font-size:14px;margin:0 0 13px}.ep-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:7px}.ep{padding:10px 6px;border:1px solid #282828;background:#141414;color:#bbb;border-radius:7px;font-size:11px}.ep:hover,.ep.current{background:#fff;color:#080808;border-color:#fff}
-.player{width:min(1050px,100%);background:#050505;border-radius:14px;overflow:hidden;border:1px solid #262626}.screen{aspect-ratio:16/9;background:radial-gradient(circle at 50% 42%,#4a1428,#0b0b0b 54%,#030303);display:grid;place-items:center;position:relative}.screen .play{width:70px;height:70px;border-radius:50%;background:#fff;color:#000;font-size:23px;padding-left:5px}.screen:before{content:"DRAMORA";position:absolute;top:18px;left:20px;font-weight:900;letter-spacing:1px}.screen .fake-sub{position:absolute;bottom:45px;background:#000b;padding:6px 10px;font-size:13px}.playerbar{padding:14px 18px;display:flex;gap:10px;align-items:center}.playerbar span{color:#999;font-size:11px}.bar{height:3px;background:#292929;flex:1}.bar i{display:block;width:36%;height:100%;background:#fff}.video-title{padding:0 18px 17px;font-weight:800;font-size:15px}
-footer{border-top:1px solid #181818;padding:28px 5%;color:#666;font-size:11px;display:flex;justify-content:space-between}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:#fff;color:#080808;padding:10px 14px;border-radius:8px;font-size:12px;font-weight:700;opacity:0;transition:.2s;z-index:80}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@media(max-width:900px){.row{grid-template-columns:repeat(4,minmax(0,1fr))}.hero{min-height:520px}.hero-orb{right:-17%;opacity:.65}.detail{grid-template-columns:180px 1fr}.ep-grid{grid-template-columns:repeat(6,1fr)}}@media(max-width:650px){.nav{padding:0 18px;height:62px;gap:15px}.navlinks{display:none}.search{margin-left:auto;width:38px;padding:0 11px}.search input{display:none}.row{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.hero{padding:45px 18px 52px;min-height:550px}.hero-orb{right:-42%;top:40px;transform:scale(.85) rotate(7deg)}.hero-copy{margin-top:160px}.hero h1{font-size:43px;letter-spacing:-2.8px}.hero p{font-size:12px}.main,main{padding-left:18px;padding-right:18px}.section{margin-top:18px}.section-head{margin:24px 0 12px}.card-info strong{font-size:11px}.detail{display:block;padding:20px}.detail-poster{width:145px;margin:auto}.detail h2{font-size:26px;margin:18px 0 8px}.episodes{padding:16px 20px 22px}.ep-grid{grid-template-columns:repeat(5,1fr)}footer{padding:24px 18px;display:block}.platforms{margin-right:-18px}.modal{padding:10px}.dialog{border-radius:12px}}
+
+/* MODAL & PLAYER CSS UPDATE */
+.modal{position:fixed;inset:0;background:#000b;backdrop-filter:blur(18px);z-index:50;display:none;align-items:center;justify-content:center;padding:25px}.modal.show{display:flex}.dialog{width:min(1050px,100%);max-height:92vh;overflow:auto;background:#0d0d0d;border:1px solid #262626;border-radius:16px;box-shadow:var(--shadow);position:relative}.close{position:absolute;right:15px;top:15px;width:36px;height:36px;border-radius:50%;background:#171717;color:#fff;z-index:5;display:grid;place-items:center;font-size:18px}.detail{display:grid;grid-template-columns:280px 1fr;gap:30px;padding:30px}.detail-poster{aspect-ratio:2/3;border-radius:10px;background:var(--art);background-size:cover}.detail h2{font-size:35px;letter-spacing:-1.7px;margin:30px 0 12px}.detail p{color:#999;line-height:1.7;font-size:13px}.chips{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0}.chip{border:1px solid #2b2b2b;border-radius:5px;padding:5px 8px;color:#aaa;font-size:10px}.episodes{border-top:1px solid #242424;padding:20px 30px 30px}.episodes h3{font-size:14px;margin:0 0 13px}.ep-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:7px}.ep{padding:10px 6px;border:1px solid #282828;background:#141414;color:#bbb;border-radius:7px;font-size:11px}.ep:hover,.ep.current{background:#fff;color:#080808;border-color:#fff}
+
+.player{width:min(1050px,100%);background:#000;border-radius:14px;overflow:hidden;border:1px solid #262626;display:flex;flex-direction:column;}
+.screen{width:100%;height:75vh;background:#000;position:relative;display:flex;justify-content:center;align-items:center;}.screen:before{content:"DRAMORA";position:absolute;top:18px;left:20px;font-weight:900;letter-spacing:1px;z-index:10;color:rgba(255,255,255,0.4)}.screen .fake-sub{position:absolute;bottom:45px;background:#000b;padding:6px 10px;font-size:13px;z-index:10}
+.screen video{width:100%;height:100%;object-fit:contain;outline:none;}
+.playerbar{padding:14px 18px;display:flex;gap:10px;align-items:center;background:#050505;}.playerbar span{color:#999;font-size:11px}.bar{height:3px;background:#292929;flex:1;border-radius:3px;overflow:hidden;}.bar i{display:block;width:100%;height:100%;background:var(--accent);animation:pulse 2s infinite;transform-origin:left;}.video-title{padding:0 18px 17px;font-weight:800;font-size:15px;background:#050505;}
+
+@keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+footer{border-top:1px solid #181818;padding:28px 5%;color:#666;font-size:11px;display:flex;justify-content:space-between}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:#fff;color:#080808;padding:10px 14px;border-radius:8px;font-size:12px;font-weight:700;opacity:0;transition:.2s;z-index:100}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* SUPER MOBILE FRIENDLY RESPONSIVE */
+@media(max-width:900px){.row{grid-template-columns:repeat(4,minmax(0,1fr))}.detail{grid-template-columns:180px 1fr}.ep-grid{grid-template-columns:repeat(6,1fr)}}
+@media(max-width:650px){
+  .nav{padding:0 18px;height:62px;gap:15px}.navlinks{display:none}.search{margin-left:auto;width:38px;padding:0 11px}.search input{display:none}.row{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+  .hero{padding:25px 18px 30px;min-height:450px}.hero-orb{right:-42%;top:40px;transform:scale(.85) rotate(7deg)}.hero-copy{margin-top:120px}.hero h1{font-size:38px;letter-spacing:-2px}.hero p{font-size:12px;line-height:1.5;margin-bottom:18px}.actions button{padding:10px 14px;font-size:13px}
+  .main,main{padding-left:18px;padding-right:18px}.section{margin-top:18px}.section-head{margin:24px 0 12px}.card-info strong{font-size:11px}.detail{display:block;padding:20px}.detail-poster{width:145px;margin:auto}.detail h2{font-size:26px;margin:18px 0 8px}.episodes{padding:16px 20px 22px}.ep-grid{grid-template-columns:repeat(5,1fr)}footer{padding:24px 18px;display:block}.platforms{margin-right:-18px}.dialog{border-radius:12px}
+  
+  /* PLAYER MOBILE FIX - FULLSCREEN & CONTAIN */
+  .modal{padding:0;}
+  .player{height:100dvh;border-radius:0;border:0;}
+  .screen{flex:1;height:auto;}
+  .close{top:15px;right:15px;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);z-index:99;}
+}
 </style>
 </head>
 <body>
 <div class="app" id="app">
 <header class="nav"><div class="brand">DRAM<span>ORA</span><i>+</i></div><nav class="navlinks"><button class="active" onclick="scrollTo(0,0)">Home</button><button onclick="document.getElementById('trending').scrollIntoView()">Trending</button><button onclick="document.getElementById('latest').scrollIntoView()">Terbaru</button><button onclick="showToast('My List siap dihubungkan ke localStorage / akun pengguna.')">My List</button></nav><div class="spacer"></div><label class="search"><span>⌕</span><input id="searchInput" placeholder="Cari drama..." oninput="doSearch(this.value)"></label><div class="avatar">T</div></header>
-<section class="hero"><div class="hero-art"><div class="hero-orb"></div></div><div class="hero-copy"><div class="eyebrow">Featured Short Drama · 01</div><h1>The Last Promise</h1><div class="meta"><span>2026</span><b>•</b><span class="pill">Romance</span><span class="pill">72 Episodes</span><span>★ 9.4</span></div><p>Ketika janji masa lalu kembali menghantui, dua orang yang seharusnya saling melupakan justru dipertemukan lagi. Sebuah kisah cinta singkat dengan episode yang bikin susah berhenti.</p><div class="actions"><button class="primary" onclick="toast('Silakan pilih drama dari daftar di bawah.')">▶ Mulai Nonton</button><button class="secondary" onclick="toast('Pilih drama dari daftar di bawah.')">＋ Detail</button></div></div></section>
+
+<section class="hero">
+  <div class="hero-art" id="heroBg"><div class="hero-orb"></div></div>
+  <div class="hero-copy">
+    <div class="eyebrow" id="heroEyebrow">🔥 TRENDING NO. 1</div>
+    <h1 id="heroTitle">Memuat Drama...</h1>
+    <div class="meta" id="heroMeta"></div>
+    <p id="heroDesc">Tunggu sebentar, sedang menarik data drama terpopuler...</p>
+    <div class="actions">
+      <button class="primary" id="btnHeroPlay">▶ Mulai Nonton</button>
+      <button class="secondary" id="btnHeroDetail">＋ Detail</button>
+    </div>
+  </div>
+</section>
+
 <main>
 <section class="section"><div class="section-head"><h2>Platform</h2><span class="more">40+ sumber konten</span></div><div class="platforms" id="platforms"></div></section>
 <section class="section" id="trending"><div class="section-head"><h2 id="trendingTitle">🔥 Sedang Trending</h2><span class="more">Lihat semua →</span></div><div class="row" id="trendingRow"></div></section>
@@ -28,11 +66,22 @@ footer{border-top:1px solid #181818;padding:28px 5%;color:#666;font-size:11px;di
 <section class="section"><div class="section-head"><h2>💗 Untuk Kamu</h2><span class="more">Berdasarkan tontonanmu</span></div><div class="row" id="forYouRow"></div></section>
 </main><footer><span>© 2026 DRAMORA · Short Drama Streaming</span><span>Data & playback dapat dihubungkan ke QuickPlay API</span></footer>
 </div>
+
 <div class="modal" id="detailModal"><div class="dialog"><button class="close" onclick="closeModal('#detailModal')">×</button><div class="detail"><div class="detail-poster" id="detailPoster"></div><div><div class="eyebrow">Short Drama</div><h2 id="detailTitle"></h2><div class="meta" id="detailMeta"></div><p id="detailDesc"></p><div class="chips" id="detailChips"></div><button class="primary" onclick="playFirstEpisode()">▶ Mulai Episode 1</button></div></div><div class="episodes"><h3>Daftar Episode</h3><div class="ep-grid" id="episodeGrid"></div></div></div></div>
-<div class="modal" id="playerModal"><div class="player"><button class="close" onclick="closeModal('#playerModal')">×</button><div class="screen"><video id="video" playsinline controls></video><div id="videoStatus" class="fake-sub">Pilih episode</div></div><div class="playerbar"><span>LIVE API</span><div class="bar"><i></i></div><span>HLS / MP4</span></div><div class="video-title" id="playerTitle">The Last Promise · Episode 1</div></div></div>
+<div class="modal" id="playerModal">
+  <div class="player">
+    <button class="close" onclick="closeModal('#playerModal')">×</button>
+    <div class="screen">
+      <video id="video" playsinline controls></video>
+      <div id="videoStatus" class="fake-sub" style="display:none;"></div>
+    </div>
+    <div class="playerbar"><span>LIVE API</span><div class="bar" id="loadingBar" style="visibility:hidden"><i></i></div><span>HLS / MP4</span></div>
+    <div class="video-title" id="playerTitle">Memuat episode...</div>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
-<!-- Ditambahkan HLS.js Library untuk memutar format m3u8 -->
+<!-- HLS.js Library -->
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 <script>
@@ -52,10 +101,36 @@ function card(x){
 }
 function render(id,data){$(id).innerHTML=(data||[]).map(card).join('')||'<div class="empty" style="display:block">Belum ada drama.</div>'}
 
+// Fungsi Baru: Update Hero Banner Otomatis
+function updateHeroBanner(topDrama) {
+  if(!topDrama) return;
+  const d = normalize(topDrama);
+  $('#heroTitle').textContent = d[0];
+  const bg = d[2] ? `url('${d[2].replace(/^http:\/\//i, 'https://')}') center/top / cover` : art(d[0]);
+  
+  // Berikan efek gradient gelap di atas gambar cover asli agar teks bisa terbaca
+  $('#heroBg').style.background = `linear-gradient(0deg, rgba(7,7,7,1) 0%, rgba(7,7,7,0.4) 100%), ${bg}`;
+  
+  $('#heroDesc').textContent = d[5] || 'Drama pendek populer nomor 1 saat ini. Nikmati alur cerita cepat dan menegangkan. Tonton episode selengkapnya sekarang!';
+  $('#heroMeta').innerHTML = `<span>${esc(d[6])}</span><b>•</b><span class="pill">${esc(d[1])}</span><span>${d[4]||'?'} Episodes</span><span>★ 9.8</span>`;
+  
+  // Set klik tombol
+  $('#btnHeroDetail').onclick = () => openDetail(d);
+  $('#btnHeroPlay').onclick = async () => {
+    toast('Menyiapkan pemutar otomatis...');
+    await openDetail(d);
+    playFirstEpisode();
+  };
+}
+
 async function loadHome(){
   $('#loading').style.display='block';
   try{const chunks=await Promise.all(providers.slice(0,4).map(p=>api('discover',{category_p:p,limit:12,page:1,lang:'id'}).catch(()=>({data:[]}))));
     const all=chunks.flatMap(x=>x.data||[]); const unique=[...new Map(all.map(x=>[x.id,x])).values()];
+    
+    // Tarik item pertama untuk Hero Banner
+    if(unique.length > 0) updateHeroBanner(unique[0]);
+
     render('#trendingRow',unique.slice(0,6)); render('#latestRow',unique.slice(6,12)); render('#forYouRow',unique.slice(12,18));
   }catch(e){toast('Gagal memuat katalog');console.error(e)}finally{$('#loading').style.display='none'}
 }
@@ -96,47 +171,60 @@ async function playEpisode(i){
   closeModal('#detailModal'); 
   $('#playerModal').classList.add('show');
   $('#playerTitle').textContent=`${currentDrama.title} · Episode ${e.index||i+1}`;
-  $('#videoStatus').textContent='Mengambil stream…';
+  
+  const v=$('#video');
+  const loader = $('#loadingBar');
+  loader.style.visibility = 'visible'; // Tampilkan bar loading
   
   try{
     const r=await api('video',{category_p:provider,id:currentDrama.id,chapterId:e.id,lang:'id'});
     const stream=(r.data?.streams||[]).find(x=>/1080|720|480|360/.test(x.quality||''))||r.data?.streams?.[0];
     if(!stream?.url)throw Error('No stream');
     
-    const v=$('#video');
     v.poster=currentDrama.cover||'';
     v.controls=true;
 
-    // Bersihkan HLS player jika sebelumnya ada video yang sedang berjalan
     if (window.hlsPlayer) {
       window.hlsPlayer.destroy();
     }
 
-    // Integrasi HLS.js
     if (stream.url.includes('.m3u8') && typeof Hls !== 'undefined' && Hls.isSupported()) {
-      const hls = new Hls();
+      // Optimasi HLS Konfigurasi agar streaming lebih lancar
+      const hls = new Hls({
+        maxBufferLength: 30, // Jangan buffer terlalu jauh agar cepat play awal
+        maxMaxBufferLength: 60,
+        enableWorker: true,
+        lowLatencyMode: true
+      });
       window.hlsPlayer = hls; 
       hls.loadSource(stream.url);
       hls.attachMedia(v);
+      
       hls.on(Hls.Events.MANIFEST_PARSED, function() {
+        loader.style.visibility = 'hidden';
         v.play().catch(()=>{});
       });
+      
+      hls.on(Hls.Events.ERROR, function (event, data) {
+        if (data.fatal) {
+          toast('Gangguan koneksi saat memuat stream');
+          loader.style.visibility = 'hidden';
+        }
+      });
     } else {
-      // Fallback untuk MP4 biasa atau browser yang mendukung HLS native
       v.src = stream.url;
+      v.addEventListener('loadeddata', () => { loader.style.visibility = 'hidden'; });
       v.play().catch(()=>{});
     }
-
-    $('#videoStatus').textContent=stream.quality||'Auto';
     
     if(r.data?.subtitles?.[0]?.url){
       const tr=document.createElement('track');
       tr.kind='subtitles';tr.label='Indonesia';tr.srclang='id';
       tr.src=r.data.subtitles[0].url;v.appendChild(tr)
     }
-  }catch(e){
-    $('#videoStatus').textContent='Stream tidak tersedia';
-    toast('Video gagal dimuat')
+  }catch(err){
+    loader.style.visibility = 'hidden';
+    toast('Video gagal dimuat (cek koneksi)');
   }
 }
 
@@ -147,8 +235,8 @@ function closeModal(id){
   if(id==='#playerModal'){
     const v=$('#video');
     v.pause();v.removeAttribute('src');v.load();v.innerHTML='';
+    $('#loadingBar').style.visibility = 'hidden';
     
-    // Hentikan download streaming HLS di background saat modal ditutup
     if (window.hlsPlayer) {
       window.hlsPlayer.destroy();
       window.hlsPlayer = null;
