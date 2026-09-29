@@ -43,12 +43,11 @@ export default async function handler(req, res) {
       });
     }
 
-    // QuickPlay HMAC authentication
     const ts = Date.now().toString();
 
     const fullPath =
       upstream.pathname +
-      (upstream.search ? upstream.search : '');
+      (upstream.search || '');
 
     const crypto = await import('crypto');
 
