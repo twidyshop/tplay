@@ -25,22 +25,28 @@ main{padding:0 5% 70px;position:relative;z-index:3}.section{margin-top:25px}.sec
 .nav-ep:hover{background:var(--accent)}
 .nav-ep.left{left:15px}
 .nav-ep.right{right:15px}
-.player-eps-container{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:12px 18px;}
-.player-eps{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scroll-behavior:smooth;}
+.player-eps-container{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:10px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.player-eps{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scroll-behavior:smooth;flex:1;}
 .player-eps::-webkit-scrollbar{height:4px;}
 .player-eps::-webkit-scrollbar-thumb{background:#333;border-radius:4px;}
+
+/* PLAYER SWITCHER BUTTONS */
+.player-modes{display:flex;gap:6px;}
+.pmode{background:#151515;border:1px solid #333;color:#aaa;padding:5px 10px;border-radius:5px;font-size:10px;font-weight:700;}
+.pmode.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
 .pep{flex:none;padding:8px 14px;background:#151515;border:1px solid #252525;border-radius:6px;color:#aaa;font-size:11px;font-weight:600;}
 .pep.active{background:#fff;color:#000;border-color:#fff;}
-.playerbar{padding:14px 18px;display:flex;gap:10px;align-items:center;background:#050505;}.playerbar span{color:#999;font-size:11px}.bar{height:3px;background:#292929;flex:1;border-radius:3px;overflow:hidden;}.bar i{display:block;width:100%;height:100%;background:var(--accent);animation:pulse 2s infinite;transform-origin:left;}.video-title{padding:0 18px 17px;font-weight:800;font-size:15px;background:#050505;}
+.playerbar{padding:12px 18px;display:flex;gap:10px;align-items:center;background:#050505;}.playerbar span{color:#999;font-size:11px}.bar{height:3px;background:#292929;flex:1;border-radius:3px;overflow:hidden;}.bar i{display:block;width:100%;height:100%;background:var(--accent);animation:pulse 2s infinite;transform-origin:left;}.video-title{padding:0 18px 14px;font-weight:800;font-size:15px;background:#050505;}
 
 @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
 footer{border-top:1px solid #181818;padding:28px 5%;color:#666;font-size:11px;display:flex;justify-content:space-between}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:#fff;color:#080808;padding:10px 14px;border-radius:8px;font-size:12px;font-weight:700;opacity:0;transition:.2s;z-index:100}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* STYLING BAWAAN BROWSER UNTUK SUBTITLE VIDEO (DINAIKKAN AGAR TIDAK KEPOTONG BAWAH) */
+/* SUBTITLE DINAIKKAN JAUH LEBIH TINGGI DI HP AGAR TIDAK KEPOTONG */
 video::-webkit-media-text-track-container {
-  bottom: 12% !important;
-  font-size: 15px !important;
+  bottom: 22% !important;
+  font-size: 16px !important;
 }
 
 /* SUPER MOBILE FRIENDLY RESPONSIVE */
@@ -63,13 +69,13 @@ video::-webkit-media-text-track-container {
   .screen{flex:1;min-height:0;} 
   .close{top:15px;right:15px;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);z-index:99;}
   .player-eps-container{padding:8px 12px;}
-  .video-title{padding:0 12px 12px;font-size:13px;}
+  .video-title{padding:0 12px 10px;font-size:13px;}
   .playerbar{padding:10px 12px;}
   .nav-ep{width:36px;height:36px;font-size:14px;}
   
   video::-webkit-media-text-track-container {
-    bottom: 15% !important;
-    font-size: 13px !important;
+    bottom: 25% !important;
+    font-size: 14px !important;
   }
 }
 </style>
@@ -130,6 +136,10 @@ video::-webkit-media-text-track-container {
     
     <div class="player-eps-container">
       <div class="player-eps" id="playerEpList"></div>
+      <div class="player-modes">
+        <button class="pmode active" id="modeHls" onclick="setPlayerMode('hls')">Player 1 (HLS)</button>
+        <button class="pmode" id="modeNative" onclick="setPlayerMode('native')">Player 2 (Direct)</button>
+      </div>
     </div>
     
     <div class="playerbar"><span>LIVE API</span><div class="bar" id="loadingBar" style="visibility:hidden"><i></i></div><span id="playerQuality">Auto</span></div>
@@ -146,6 +156,9 @@ const API='/api/quickplay';
 const providers=['meloshort', 'freereels', 'stardusttv', 'microdrama', 'reelshort'];
 let provider='meloshort', currentDrama=null, currentEpisodes=[], currentIndex=0, searchTimer;
 let globalMasterList = [];
+let currentPlayerMode = 'hls'; // 'hls' atau 'native'
+let currentStreamUrl = '';
+let currentSubUrl = '';
 
 const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 async function api(path,params={}){const u=new URL(API,location.origin);u.searchParams.set('path','/api/v2/'+path);Object.entries(params).forEach(([k,v])=>v!=null&&u.searchParams.set(k,v));const r=await fetch(u);if(!r.ok)throw Error('API '+r.status);return r.json()}
@@ -218,7 +231,6 @@ function setProvider(p,el){
   loadProvider(p);
 }
 
-/* SISTEM PENCARIAN MENYELURUH (MENYARING SEMUA SECTION BERANDA) */
 function handleSearchInput(val){
   clearTimeout(searchTimer);
   searchTimer = setTimeout(() => {
@@ -227,17 +239,12 @@ function handleSearchInput(val){
       goHome();
       return;
     }
-    
-    // Filter instan dari seluruh master list
     const filtered = globalMasterList.filter(item => {
       const title = (item.title || '').toLowerCase();
       return title.includes(q);
     });
-
-    // Sembunyikan section trending & for you saat mengetik agar hasil pencarian terkonsentrasi
     $('#trendingSec').style.display = 'none';
     $('#forYouSec').style.display = 'none';
-    
     render('#latestRow', filtered);
     $('#latestTitle').textContent = `Hasil Pencarian: "${val}" (${filtered.length} ditemukan)`;
     $('#empty').style.display = filtered.length ? 'none' : 'block';
@@ -250,7 +257,6 @@ async function showAllTrending(){
   $('#allContent').style.display='block';
   $('#allTitle').textContent = `Semua Drama (${provider.toUpperCase()})`;
   $('#allRow').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#777;">Memuat semua daftar...</div>';
-  
   try {
     const r = await api('discover', {category_p: provider, limit: 50, page: 1, lang: 'id'});
     const data = r.data || globalMasterList;
@@ -297,6 +303,16 @@ function playFirstEpisode() {
 function playPrevEp() { if(currentIndex > 0) playEpisode(currentIndex - 1); }
 function playNextEp() { if(currentIndex < currentEpisodes.length - 1) playEpisode(currentIndex + 1); }
 
+function setPlayerMode(mode) {
+  currentPlayerMode = mode;
+  document.querySelectorAll('.pmode').forEach(b => b.classList.remove('active'));
+  if(mode === 'hls') $('#modeHls').classList.add('active');
+  else $('#modeNative').classList.add('active');
+  
+  toast(`Beralih ke ${mode === 'hls' ? 'Player 1 (HLS)' : 'Player 2 (Direct)'}`);
+  if (currentStreamUrl) initPlayerStream(currentStreamUrl, currentSubUrl);
+}
+
 async function playEpisode(i){
   const e=currentEpisodes[i];
   if(!e)return;
@@ -319,7 +335,6 @@ async function playEpisode(i){
     if(activeBtn) activeBtn.scrollIntoView({behavior: 'smooth', inline: 'center', block: 'nearest'});
   }, 100);
 
-  const v=$('#video');
   const loader = $('#loadingBar');
   loader.style.visibility = 'visible'; 
   
@@ -329,66 +344,66 @@ async function playEpisode(i){
     if(!stream?.url)throw Error('No stream');
     
     const proxyBase = "https://tplay-proxy.3twidy.workers.dev/?url=";
-    const finalStreamUrl = proxyBase + encodeURIComponent(stream.url);
+    currentStreamUrl = proxyBase + encodeURIComponent(stream.url);
+    currentSubUrl = r.data?.subtitles?.[0]?.url ? (proxyBase + encodeURIComponent(r.data.subtitles[0].url)) : '';
     
-    v.poster=currentDrama.cover||'';
-    v.controls=true;
-    v.onended = () => { playNextEp(); };
-
-    if (window.hlsPlayer) window.hlsPlayer.destroy();
-    v.querySelectorAll('track').forEach(track => track.remove());
-
-    if (finalStreamUrl.includes('.m3u8') && typeof Hls !== 'undefined' && Hls.isSupported()) {
-      const hls = new Hls({ maxBufferLength: 30, enableWorker: true });
-      window.hlsPlayer = hls; 
-      hls.loadSource(finalStreamUrl);
-      hls.attachMedia(v);
-      
-      hls.on(Hls.Events.MANIFEST_PARSED, function() {
-        loader.style.visibility = 'hidden';
-        v.play().catch(()=>{});
-      });
-      
-      hls.on(Hls.Events.ERROR, function (event, data) {
-        if (data.fatal) {
-          switch (data.type) {
-            case Hls.ErrorTypes.NETWORK_ERROR:
-              hls.startLoad();
-              break;
-            case Hls.ErrorTypes.MEDIA_ERROR:
-              hls.recoverMediaError();
-              break;
-            default:
-              hls.destroy();
-              loader.style.visibility = 'hidden';
-              break;
-          }
-        }
-      });
-    } else {
-      v.src = finalStreamUrl;
-      v.addEventListener('loadeddata', () => { loader.style.visibility = 'hidden'; }, {once:true});
-      v.play().catch(()=>{});
-    }
-    
+    initPlayerStream(currentStreamUrl, currentSubUrl);
     $('#playerQuality').textContent=stream.quality||'Auto';
-    
-    // PASANG TRACK SUBTITLE BAWAAN PLAYER STANDARD (MEMUNCULKAN MENU CC / SUBTITLE DI HP & TABLET)
-    if(r.data?.subtitles?.[0]?.url){
-      const subUrl = r.data.subtitles[0].url;
-      const proxySubUrl = proxyBase + encodeURIComponent(subUrl);
-      
-      const tr = document.createElement('track');
-      tr.kind = 'subtitles';
-      tr.label = 'Indonesia';
-      tr.srclang = 'id';
-      tr.src = proxySubUrl;
-      tr.default = true;
-      v.appendChild(tr);
-    }
   }catch(err){
     loader.style.visibility = 'hidden';
     toast('Video gagal dimuat (cek koneksi)');
+  }
+}
+
+function initPlayerStream(videoUrl, subUrl) {
+  const v=$('#video');
+  const loader = $('#loadingBar');
+  loader.style.visibility = 'visible';
+
+  v.poster = currentDrama.cover||'';
+  v.controls = true;
+  v.onended = () => { playNextEp(); };
+
+  if (window.hlsPlayer) { window.hlsPlayer.destroy(); window.hlsPlayer = null; }
+  v.querySelectorAll('track').forEach(track => track.remove());
+
+  // Player Mode 1: HLS.js
+  if (currentPlayerMode === 'hls' && videoUrl.includes('.m3u8') && typeof Hls !== 'undefined' && Hls.isSupported()) {
+    const hls = new Hls({ maxBufferLength: 30, enableWorker: true });
+    window.hlsPlayer = hls; 
+    hls.loadSource(videoUrl);
+    hls.attachMedia(v);
+    
+    hls.on(Hls.Events.MANIFEST_PARSED, function() {
+      loader.style.visibility = 'hidden';
+      v.play().catch(()=>{});
+    });
+    
+    hls.on(Hls.Events.ERROR, function (event, data) {
+      if (data.fatal) {
+        switch (data.type) {
+          case Hls.ErrorTypes.NETWORK_ERROR: hls.startLoad(); break;
+          case Hls.ErrorTypes.MEDIA_ERROR: hls.recoverMediaError(); break;
+          default: hls.destroy(); loader.style.visibility = 'hidden'; break;
+        }
+      }
+    });
+  } else {
+    // Player Mode 2: Native HTML5 Direct Stream
+    v.src = videoUrl;
+    v.addEventListener('loadeddata', () => { loader.style.visibility = 'hidden'; }, {once:true});
+    v.play().catch(()=>{});
+  }
+
+  // Pasang Subtitle
+  if(subUrl){
+    const tr = document.createElement('track');
+    tr.kind = 'subtitles';
+    tr.label = 'Indonesia';
+    tr.srclang = 'id';
+    tr.src = subUrl;
+    tr.default = true;
+    v.appendChild(tr);
   }
 }
 
