@@ -7,11 +7,11 @@
 <title>TPLAY — Short Drama</title>
 <style>
 :root{color-scheme:dark;--bg:#070707;--surface:#101010;--surface2:#171717;--text:#f6f6f6;--muted:#969696;--line:#242424;--accent:#ff315d;--accent2:#ff8a3d;--shadow:0 24px 70px rgba(0,0,0,.45)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#070707;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input{font:inherit}button{cursor:pointer;border:0}.app{min-height:100vh;background:radial-gradient(circle at 72% 0%,rgba(255,49,93,.13),transparent 30%),#070707}.nav{height:72px;display:flex;align-items:center;gap:28px;padding:0 5%;position:sticky;top:0;z-index:20;background:linear-gradient(#070707f2,#070707d9,transparent);backdrop-filter:blur(16px)}.brand{font-weight:900;letter-spacing:-1.5px;font-size:23px}.brand i{font-style:normal;color:var(--accent)}.navlinks{display:flex;gap:22px;color:#aaa;font-size:14px}.navlinks button{background:none;color:inherit}.navlinks button.active,.navlinks button:hover{color:#fff}.spacer{flex:1}.search{width:230px;height:38px;border:1px solid #292929;border-radius:999px;background:#101010;display:flex;align-items:center;padding:0 13px;gap:8px}.search input{width:100%;border:0;outline:0;background:none;color:#fff;font-size:13px}.search span{color:#777}.avatar{width:35px;height:35px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ff315d,#8e2cff);font-size:13px;font-weight:800}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#070707;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input{font:inherit}button{cursor:pointer;border:0}.app{min-height:100vh;background:radial-gradient(circle at 72% 0%,rgba(255,49,93,.13),transparent 30%),#070707}.nav{height:72px;display:flex;align-items:center;gap:28px;padding:0 5%;position:sticky;top:0;z-index:20;background:linear-gradient(#070707f2,#070707d9,transparent);backdrop-filter:blur(16px)}.brand{font-weight:900;letter-spacing:-1.5px;font-size:23px;cursor:pointer}.brand i{font-style:normal;color:var(--accent)}.navlinks{display:flex;gap:22px;color:#aaa;font-size:14px}.navlinks button{background:none;color:inherit}.navlinks button.active,.navlinks button:hover{color:#fff}.spacer{flex:1}.search{width:230px;height:38px;border:1px solid #292929;border-radius:999px;background:#101010;display:flex;align-items:center;padding:0 13px;gap:8px}.search input{width:100%;border:0;outline:0;background:none;color:#fff;font-size:13px}.search span{color:#777}.avatar{width:35px;height:35px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ff315d,#8e2cff);font-size:13px;font-weight:800}
 
 /* HERO SECTION CSS UPDATE */
 .hero{min-height:570px;padding:65px 5% 70px;display:flex;align-items:end;position:relative;overflow:hidden;background:radial-gradient(circle at 75% 36%,rgba(255,49,93,.34),transparent 18%),linear-gradient(90deg,#070707 0%,#070707d8 39%,#07070744 72%,#070707 100%)}.hero:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 75% 45%,rgba(255,88,66,.18),transparent 34%),linear-gradient(90deg,#070707 0%,transparent 65%),linear-gradient(0deg,#070707 0%,transparent 42%);pointer-events:none}.hero-art{position:absolute;inset:0;overflow:hidden;opacity:1;transition:background 0.5s ease;background-position:center top;background-size:cover;}.hero-orb{position:absolute;width:470px;height:600px;right:7%;top:10px;border-radius:46% 54% 52% 48%;background:radial-gradient(circle at 35% 28%,#ffcf9e 0 4%,transparent 4.5%),radial-gradient(circle at 52% 28%,#ffb37d 0 3%,transparent 3.5%),linear-gradient(150deg,#e02d48,#5d183d 46%,#17102a 75%);filter:saturate(.95);transform:rotate(7deg);box-shadow:-40px 30px 130px rgba(255,49,93,.24)}.hero-orb:before{content:"";position:absolute;left:18%;top:18%;width:55%;height:30%;border-radius:50%;background:rgba(30,12,20,.75);transform:rotate(-12deg)}.hero-orb:after{content:"TPLAY";position:absolute;right:-7%;bottom:16%;font-size:75px;font-weight:1000;letter-spacing:-6px;color:#ffffff18;transform:rotate(-72deg)}.hero-copy{position:relative;z-index:2;max-width:590px}.eyebrow{font-size:11px;letter-spacing:2.8px;color:#ff718d;font-weight:800;text-transform:uppercase;margin-bottom:17px}.hero h1{font-size:clamp(32px,5vw,66px);line-height:1;letter-spacing:-3px;margin:0 0 20px;max-width:650px;text-shadow:0 4px 20px rgba(0,0,0,0.8)}.hero p{color:#ddd;line-height:1.7;font-size:14px;max-width:530px;margin:0 0 24px;text-shadow:0 2px 10px rgba(0,0,0,0.8)}.meta{display:flex;align-items:center;gap:12px;color:#bbb;font-size:12px;margin-bottom:25px}.pill{padding:4px 8px;border:1px solid #555;border-radius:5px;color:#eee;background:rgba(0,0,0,0.5)}.actions{display:flex;gap:10px}.primary{background:#fff;color:#080808;padding:12px 19px;border-radius:9px;font-weight:800;box-shadow:0 4px 15px rgba(255,255,255,0.2)}.secondary{background:rgba(25,25,25,0.7);backdrop-filter:blur(10px);color:#fff;padding:12px 19px;border-radius:9px;border:1px solid #444}.primary:hover{background:#eee}.secondary:hover{background:rgba(40,40,40,0.9)}
-main{padding:0 5% 70px;position:relative;z-index:3}.section{margin-top:25px}.section-head{display:flex;align-items:center;justify-content:space-between;margin:30px 0 15px}.section h2{font-size:18px;letter-spacing:-.4px;margin:0}.more{font-size:12px;color:#888}.row{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}.card{min-width:0;position:relative;transition:.22s transform}.card:hover{transform:translateY(-5px)}.poster{aspect-ratio:2/3;border-radius:9px;overflow:hidden;position:relative;background:#222;box-shadow:0 12px 35px rgba(0,0,0,.28)}.poster:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.72),transparent 42%)}.poster-art{position:absolute;inset:0;background:var(--art);}.poster-title{position:absolute;left:11px;right:9px;bottom:10px;z-index:2;font-size:14px;font-weight:900;line-height:1.05;letter-spacing:-.3px;text-shadow:0 2px 12px #000}.tag{position:absolute;top:8px;left:8px;z-index:3;background:#ffffffec;color:#080808;padding:4px 6px;border-radius:5px;font-size:9px;font-weight:900}.rating{position:absolute;right:8px;top:8px;z-index:3;background:#080808b8;padding:4px 6px;border-radius:5px;font-size:9px}.card-info{padding:9px 1px 0}.card-info strong{font-size:12px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card-info small{color:#777;font-size:10px}.continue{display:flex;gap:13px;padding:13px;background:#101010;border:1px solid #202020;border-radius:11px}.continue .mini{width:62px;aspect-ratio:2/3;border-radius:6px;background:var(--art);flex:none}.continue-info{min-width:0}.continue-info strong{font-size:13px}.continue-info p{margin:5px 0 8px;color:#777;font-size:10px}.progress{height:3px;background:#2a2a2a;border-radius:9px;overflow:hidden}.progress i{display:block;width:62%;height:100%;background:var(--accent)}
+main{padding:0 5% 70px;position:relative;z-index:3}.section{margin-top:25px}.section-head{display:flex;align-items:center;justify-content:space-between;margin:30px 0 15px}.section h2{font-size:18px;letter-spacing:-.4px;margin:0}.more{font-size:12px;color:#888;cursor:pointer;transition:0.2s}.more:hover{color:#fff;text-decoration:underline}.row{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}.card{min-width:0;position:relative;transition:.22s transform}.card:hover{transform:translateY(-5px)}.poster{aspect-ratio:2/3;border-radius:9px;overflow:hidden;position:relative;background:#222;box-shadow:0 12px 35px rgba(0,0,0,.28)}.poster:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.72),transparent 42%)}.poster-art{position:absolute;inset:0;background:var(--art);}.poster-title{position:absolute;left:11px;right:9px;bottom:10px;z-index:2;font-size:14px;font-weight:900;line-height:1.05;letter-spacing:-.3px;text-shadow:0 2px 12px #000}.tag{position:absolute;top:8px;left:8px;z-index:3;background:#ffffffec;color:#080808;padding:4px 6px;border-radius:5px;font-size:9px;font-weight:900}.rating{position:absolute;right:8px;top:8px;z-index:3;background:#080808b8;padding:4px 6px;border-radius:5px;font-size:9px}.card-info{padding:9px 1px 0}.card-info strong{font-size:12px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card-info small{color:#777;font-size:10px}.continue{display:flex;gap:13px;padding:13px;background:#101010;border:1px solid #202020;border-radius:11px}.continue .mini{width:62px;aspect-ratio:2/3;border-radius:6px;background:var(--art);flex:none}.continue-info{min-width:0}.continue-info strong{font-size:13px}.continue-info p{margin:5px 0 8px;color:#777;font-size:10px}.progress{height:3px;background:#2a2a2a;border-radius:9px;overflow:hidden}.progress i{display:block;width:62%;height:100%;background:var(--accent)}
 .platforms{display:flex;gap:8px;overflow:auto;padding-bottom:5px}.platform{white-space:nowrap;background:#111;border:1px solid #242424;color:#aaa;border-radius:999px;padding:8px 13px;font-size:11px}.platform.active{background:#fff;color:#080808;border-color:#fff}.empty{padding:50px;text-align:center;color:#777;display:none}
 
 /* MODAL CSS */
@@ -65,9 +65,9 @@ footer{border-top:1px solid #181818;padding:28px 5%;color:#666;font-size:11px;di
 </head>
 <body>
 <div class="app" id="app">
-<header class="nav"><div class="brand">TPLAY<i>+</i></div><nav class="navlinks"><button class="active" onclick="scrollTo(0,0)">Home</button><button onclick="document.getElementById('trending').scrollIntoView()">Trending</button><button onclick="document.getElementById('latest').scrollIntoView()">Terbaru</button><button onclick="showToast('My List siap dihubungkan ke localStorage / akun pengguna.')">My List</button></nav><div class="spacer"></div><label class="search"><span>⌕</span><input id="searchInput" placeholder="Cari drama..." oninput="doSearch(this.value)"></label><div class="avatar">T</div></header>
+<header class="nav"><div class="brand" onclick="goHome()">TPLAY<i>+</i></div><nav class="navlinks"><button class="active" onclick="goHome()">Home</button><button onclick="document.getElementById('trending').scrollIntoView()">Trending</button><button onclick="document.getElementById('latest').scrollIntoView()">Terbaru</button><button onclick="showToast('My List siap dihubungkan ke localStorage / akun pengguna.')">My List</button></nav><div class="spacer"></div><label class="search"><span>⌕</span><input id="searchInput" placeholder="Cari drama..." oninput="doSearch(this.value)"></label><div class="avatar">T</div></header>
 
-<section class="hero">
+<section class="hero" id="heroSection">
   <div class="hero-art" id="heroBg"><div class="hero-orb" id="heroOrb"></div></div>
   <div class="hero-copy">
     <div class="eyebrow" id="heroEyebrow">🔥 TRENDING NO. 1</div>
@@ -83,10 +83,26 @@ footer{border-top:1px solid #181818;padding:28px 5%;color:#666;font-size:11px;di
 
 <main>
 <section class="section"><div class="section-head"><h2>Platform</h2><span class="more">40+ sumber konten</span></div><div class="platforms" id="platforms"></div></section>
-<section class="section" id="trending"><div class="section-head"><h2 id="trendingTitle">🔥 Sedang Trending</h2><span class="more">Lihat semua →</span></div><div class="row" id="trendingRow"></div></section>
-<section class="section"><div class="section-head"><h2>▶ Lanjut Nonton</h2><span class="more">Riwayat kamu</span></div><div class="continue"><div class="mini" style="--art:linear-gradient(145deg,#1d263f,#ad3858 55%,#f3b37d)"></div><div class="continue-info"><strong>The Contract Wife</strong><p>Episode 14 · tersisa 08:42</p><div class="progress"><i></i></div></div></div></section>
-<section class="section" id="latest"><div class="section-head"><h2 id="latestTitle">✨ Drama Terbaru</h2><span class="more">Update hari ini</span></div><div class="row" id="latestRow"></div><div class="empty" id="empty">Drama tidak ditemukan.</div><div id="loading" style="display:none;color:#777;font-size:11px;padding:18px 0">Memuat katalog…</div></section>
-<section class="section"><div class="section-head"><h2>💗 Untuk Kamu</h2><span class="more">Berdasarkan tontonanmu</span></div><div class="row" id="forYouRow"></div></section>
+
+<!-- KONTEN UTAMA (HOME) -->
+<div id="homeContent">
+  <section class="section" id="trending"><div class="section-head"><h2 id="trendingTitle">🔥 Sedang Trending</h2><span class="more" onclick="showAllTrending()">Lihat semua →</span></div><div class="row" id="trendingRow"></div></section>
+  <section class="section"><div class="section-head"><h2>▶ Lanjut Nonton</h2><span class="more">Riwayat kamu</span></div><div class="continue"><div class="mini" style="--art:linear-gradient(145deg,#1d263f,#ad3858 55%,#f3b37d)"></div><div class="continue-info"><strong>The Contract Wife</strong><p>Episode 14 · tersisa 08:42</p><div class="progress"><i></i></div></div></div></section>
+  <section class="section" id="latest"><div class="section-head"><h2 id="latestTitle">✨ Drama Terbaru</h2><span class="more">Update hari ini</span></div><div class="row" id="latestRow"></div><div class="empty" id="empty">Drama tidak ditemukan.</div><div id="loading" style="display:none;color:#777;font-size:11px;padding:18px 0">Memuat katalog…</div></section>
+  <section class="section"><div class="section-head"><h2>💗 Untuk Kamu</h2><span class="more">Berdasarkan tontonanmu</span></div><div class="row" id="forYouRow"></div></section>
+</div>
+
+<!-- HALAMAN LIHAT SEMUA -->
+<div id="allContent" style="display:none;">
+  <section class="section">
+    <div class="section-head">
+      <h2 id="allTitle">Semua Drama</h2>
+      <button class="secondary" onclick="goHome()" style="padding:6px 14px; font-size:12px;">← Kembali ke Beranda</button>
+    </div>
+    <div class="row" id="allRow"></div>
+  </section>
+</div>
+
 </main><footer><span>© 2026 TPLAY · Short Drama Streaming</span><span>Data & playback dapat dihubungkan ke QuickPlay API</span></footer>
 </div>
 
@@ -117,9 +133,10 @@ footer{border-top:1px solid #181818;padding:28px 5%;color:#666;font-size:11px;di
 
 <script>
 const API='/api/quickplay';
-// UPDATE: Memindah meloshort ke urutan pertama agar jadi default
 const providers=['meloshort', 'freereels', 'stardusttv', 'microdrama', 'reelshort'];
 let provider='meloshort', currentDrama=null, currentEpisodes=[], currentIndex=0, searchTimer;
+let cachedAllData = [];
+
 const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 async function api(path,params={}){const u=new URL(API,location.origin);u.searchParams.set('path','/api/v2/'+path);Object.entries(params).forEach(([k,v])=>v!=null&&u.searchParams.set(k,v));const r=await fetch(u);if(!r.ok)throw Error('API '+r.status);return r.json()}
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(window.__t);window.__t=setTimeout(()=>t.classList.remove('show'),2200)}
@@ -137,19 +154,15 @@ function updateHeroBanner(topDrama) {
   if(!topDrama) return;
   const d = normalize(topDrama);
   $('#heroTitle').textContent = d[0];
-  
   $('#heroBg').innerHTML = ''; 
-  
   const bgUrl = d[2] ? d[2].replace(/^http:\/\//i, 'https://') : '';
   if (bgUrl) {
     $('#heroBg').style.backgroundImage = `linear-gradient(0deg, #070707 0%, rgba(7,7,7,0.4) 100%), url('${bgUrl}')`;
   } else {
     $('#heroBg').style.background = art(d[0]);
   }
-  
   $('#heroDesc').textContent = d[5] || 'Drama pendek populer nomor 1 saat ini. Nikmati alur cerita cepat dan menegangkan. Tonton episode selengkapnya sekarang!';
   $('#heroMeta').innerHTML = `<span>${esc(d[6])}</span><b>•</b><span class="pill">${esc(d[1])}</span><span>${d[4]||'?'} Episodes</span><span>★ 9.8</span>`;
-  
   $('#btnHeroDetail').onclick = () => openDetail(d);
   $('#btnHeroPlay').onclick = async () => {
     toast('Menyiapkan pemutar otomatis...');
@@ -160,15 +173,72 @@ function updateHeroBanner(topDrama) {
 
 async function loadHome(){
   $('#loading').style.display='block';
-  try{const chunks=await Promise.all(providers.slice(0,4).map(p=>api('discover',{category_p:p,limit:12,page:1,lang:'id'}).catch(()=>({data:[]}))));
-    const all=chunks.flatMap(x=>x.data||[]); const unique=[...new Map(all.map(x=>[x.id,x])).values()];
+  try{
+    const chunks=await Promise.all(providers.slice(0,4).map(p=>api('discover',{category_p:p,limit:12,page:1,lang:'id'}).catch(()=>({data:[]}))));
+    const all=chunks.flatMap(x=>x.data||[]); 
+    const unique=[...new Map(all.map(x=>[x.id,x])).values()];
+    cachedAllData = unique;
     if(unique.length > 0) updateHeroBanner(unique[0]);
-    render('#trendingRow',unique.slice(0,6)); render('#latestRow',unique.slice(6,12)); render('#forYouRow',unique.slice(12,18));
+    render('#trendingRow',unique.slice(0,6)); 
+    render('#latestRow',unique.slice(6,12)); 
+    render('#forYouRow',unique.slice(12,18));
   }catch(e){toast('Gagal memuat katalog');console.error(e)}finally{$('#loading').style.display='none'}
 }
-function setProvider(p,el){provider=p;document.querySelectorAll('.platform').forEach(x=>x.classList.remove('active'));el.classList.add('active');loadProvider(p)}
-async function loadProvider(p){try{const r=await api('discover',{category_p:p,limit:18,page:1,lang:'id'});render('#trendingRow',r.data||[]);$('#trendingTitle').textContent='🔥 '+p+' · Discover'}catch(e){toast('Provider gagal dimuat')}}
-async function search(q){if(!q.trim()){loadHome();return}try{const rs=await Promise.all(providers.slice(0,5).map(p=>api('search',{category_p:p,query:q,limit:8,page:1,lang:'id'}).catch(()=>({data:[]}))));render('#latestRow',rs.flatMap(x=>x.data||[]));$('#latestTitle').textContent='Hasil pencarian';$('#empty').style.display='none'}catch(e){toast('Pencarian gagal')}}
+
+async function loadProvider(p){
+  try{
+    const r=await api('discover',{category_p:p,limit:24,page:1,lang:'id'});
+    cachedAllData = r.data || [];
+    render('#trendingRow',cachedAllData.slice(0,6)); 
+    render('#latestRow',cachedAllData.slice(6,12));
+    render('#forYouRow',cachedAllData.slice(12,18));
+    $('#trendingTitle').textContent='🔥 '+p+' · Trending';
+  }catch(e){toast('Provider gagal dimuat')}
+}
+
+function setProvider(p,el){
+  provider=p;
+  document.querySelectorAll('.platform').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+  goHome();
+  loadProvider(p);
+}
+
+async function search(q){
+  if(!q.trim()){goHome();return}
+  try{
+    const rs=await Promise.all(providers.slice(0,5).map(p=>api('search',{category_p:p,query:q,limit:8,page:1,lang:'id'}).catch(()=>({data:[]}))));
+    const results = rs.flatMap(x=>x.data||[]);
+    cachedAllData = results;
+    render('#latestRow',results);
+    $('#latestTitle').textContent='Hasil pencarian';
+    $('#empty').style.display=results.length?'none':'block';
+  }catch(e){toast('Pencarian gagal')}
+}
+
+// FUNGSI TAMPILKAN SEMUA (LIHAT SEMUA)
+async function showAllTrending(){
+  $('#homeContent').style.display='none';
+  $('#heroSection').style.display='none';
+  $('#allContent').style.display='block';
+  $('#allTitle').textContent = `Semua Drama (${provider.toUpperCase()})`;
+  $('#allRow').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#777;">Memuat semua daftar...</div>';
+  
+  try {
+    const r = await api('discover', {category_p: provider, limit: 50, page: 1, lang: 'id'});
+    const data = r.data || cachedAllData;
+    render('#allRow', data);
+  } catch(e) {
+    render('#allRow', cachedAllData);
+  }
+}
+
+function goHome(){
+  $('#allContent').style.display='none';
+  $('#homeContent').style.display='block';
+  $('#heroSection').style.display='flex';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
 
 async function openDetail(d){
   currentDrama={id:d[3],title:d[0],cover:d[2],genre:d[1],episodes:d[4],synopsis:d[5],status:d[6],views:d[7]};
@@ -227,7 +297,6 @@ async function playEpisode(i){
     const stream=(r.data?.streams||[]).find(x=>/1080|720|480|360/.test(x.quality||''))||r.data?.streams?.[0];
     if(!stream?.url)throw Error('No stream');
     
-    // INTEGRASI CLOUDFLARE PROXY WORKER
     const proxyBase = "https://tplay-proxy.3twidy.workers.dev/?url=";
     const finalStreamUrl = proxyBase + encodeURIComponent(stream.url);
     
