@@ -117,7 +117,6 @@ footer{border-top:1px solid #181818;padding:28px 5%;color:#666;font-size:11px;di
 
 <script>
 const API='/api/quickplay';
-// Daftar platform diperbarui sesuai paket Nano (5 platform)
 const providers=['stardusttv', 'meloshort', 'freereels', 'microdrama', 'reelshort'];
 let provider='stardusttv', currentDrama=null, currentEpisodes=[], currentIndex=0, searchTimer;
 const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
@@ -227,6 +226,10 @@ async function playEpisode(i){
     const stream=(r.data?.streams||[]).find(x=>/1080|720|480|360/.test(x.quality||''))||r.data?.streams?.[0];
     if(!stream?.url)throw Error('No stream');
     
+    // INTEGRASI CLOUDFLARE PROXY WORKER
+    const proxyBase = "https://tplay-proxy.3twidy.workers.dev/?url=";
+    const finalStreamUrl = proxyBase + encodeURIComponent(stream.url);
+    
     v.poster=currentDrama.cover||'';
     v.controls=true;
 
@@ -234,10 +237,10 @@ async function playEpisode(i){
 
     if (window.hlsPlayer) window.hlsPlayer.destroy();
 
-    if (stream.url.includes('.m3u8') && typeof Hls !== 'undefined' && Hls.isSupported()) {
+    if (finalStreamUrl.includes('.m3u8') && typeof Hls !== 'undefined' && Hls.isSupported()) {
       const hls = new Hls({ maxBufferLength: 30, enableWorker: true });
       window.hlsPlayer = hls; 
-      hls.loadSource(stream.url);
+      hls.loadSource(finalStreamUrl);
       hls.attachMedia(v);
       
       hls.on(Hls.Events.MANIFEST_PARSED, function() {
@@ -266,7 +269,7 @@ async function playEpisode(i){
         }
       });
     } else {
-      v.src = stream.url;
+      v.src = finalStreamUrl;
       v.addEventListener('loadeddata', () => { loader.style.visibility = 'hidden'; }, {once:true});
       v.play().catch(()=>{});
     }
