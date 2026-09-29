@@ -65,7 +65,7 @@ footer{border-top:1px solid #181818;padding:28px 5%;color:#666;font-size:11px;di
 </head>
 <body>
 <div class="app" id="app">
-<header class="nav"><div class="brand" onclick="goHome()">TPLAY<i>+</i></div><nav class="navlinks"><button class="active" onclick="goHome()">Home</button><button onclick="document.getElementById('trending').scrollIntoView()">Trending</button><button onclick="document.getElementById('latest').scrollIntoView()">Terbaru</button><button onclick="showToast('My List siap dihubungkan ke localStorage / akun pengguna.')">My List</button></nav><div class="spacer"></div><label class="search"><span>⌕</span><input id="searchInput" placeholder="Cari drama..." oninput="doSearch(this.value)"></label><div class="avatar">T</div></header>
+<header class="nav"><div class="brand" onclick="goHome()">TPLAY<i>+</i></div><nav class="navlinks"><button class="active" onclick="goHome()">Home</button><button onclick="document.getElementById('trending').scrollIntoView()">Trending</button><button onclick="document.getElementById('latest').scrollIntoView()">Terbaru</button><button onclick="showToast('My List siap dihubungkan ke localStorage / akun pengguna.')">My List</button></nav><div class="spacer"></div><label class="search"><span>⌕</span><input id="searchInput" placeholder="Cari drama..." oninput="handleSearchInput(this.value)"></label><div class="avatar">T</div></header>
 
 <section class="hero" id="heroSection">
   <div class="hero-art" id="heroBg"><div class="hero-orb" id="heroOrb"></div></div>
@@ -148,7 +148,7 @@ function card(x){
   const bg = d[2] ? `url('${d[2].replace(/^http:\/\//i, 'https://')}') center/cover` : art(d[0]);
   return `<article class="card" onclick='openDetail(${JSON.stringify(d)})'><div class="poster"><div class="poster-art" style="--art:${bg}"></div><span class="rating">${esc(d[6])}</span><div class="poster-title">${esc(d[0])}</div></div><div class="card-info"><strong>${esc(d[0])}</strong><small>${esc(d[1])} · ${d[4]||'?'} eps</small></div></article>`
 }
-function render(id,data){$(id).innerHTML=(data||[]).map(card).join('')||'<div class="empty" style="display:block">Belum ada drama.</div>'}
+function render(id,data){$(id).innerHTML=(data||[]).map(card).join('')||'<div class="empty" style="display:block">Drama tidak ditemukan.</div>'}
 
 function updateHeroBanner(topDrama) {
   if(!topDrama) return;
@@ -174,24 +174,25 @@ function updateHeroBanner(topDrama) {
 async function loadHome(){
   $('#loading').style.display='block';
   try{
-    const chunks=await Promise.all(providers.slice(0,4).map(p=>api('discover',{category_p:p,limit:12,page:1,lang:'id'}).catch(()=>({data:[]}))));
+    // DIUBAH: Batas limit per platform diperbesar (dari 12 ke 24) agar data lebih banyak yang tertarik
+    const chunks=await Promise.all(providers.map(p=>api('discover',{category_p:p,limit:24,page:1,lang:'id'}).catch(()=>({data:[]}))));
     const all=chunks.flatMap(x=>x.data||[]); 
     const unique=[...new Map(all.map(x=>[x.id,x])).values()];
     cachedAllData = unique;
     if(unique.length > 0) updateHeroBanner(unique[0]);
     render('#trendingRow',unique.slice(0,6)); 
-    render('#latestRow',unique.slice(6,12)); 
-    render('#forYouRow',unique.slice(12,18));
+    render('#latestRow',unique.slice(6,18)); 
+    render('#forYouRow',unique.slice(18,24));
   }catch(e){toast('Gagal memuat katalog');console.error(e)}finally{$('#loading').style.display='none'}
 }
 
 async function loadProvider(p){
   try{
-    const r=await api('discover',{category_p:p,limit:24,page:1,lang:'id'});
+    const r=await api('discover',{category_p:p,limit:30,page:1,lang:'id'});
     cachedAllData = r.data || [];
     render('#trendingRow',cachedAllData.slice(0,6)); 
-    render('#latestRow',cachedAllData.slice(6,12));
-    render('#forYouRow',cachedAllData.slice(12,18));
+    render('#latestRow',cachedAllData.slice(6,18));
+    render('#forYouRow',cachedAllData.slice(18,24));
     $('#trendingTitle').textContent='🔥 '+p+' · Trending';
   }catch(e){toast('Provider gagal dimuat')}
 }
@@ -204,16 +205,36 @@ function setProvider(p,el){
   loadProvider(p);
 }
 
+// DIPERBAIKI: Fungsi Search yang lebih responsif dan mencakup platform aktif
 async function search(q){
-  if(!q.trim()){goHome();return}
+  q = q.trim();
+  if(!q){
+    goHome();
+    return;
+  }
+  
+  // Sembunyikan beranda utama / hero saat mencari agar hasil fokus
+  $('#loading').style.display='block';
   try{
-    const rs=await Promise.all(providers.slice(0,5).map(p=>api('search',{category_p:p,query:q,limit:8,page:1,lang:'id'}).catch(()=>({data:[]}))));
-    const results = rs.flatMap(x=>x.data||[]);
-    cachedAllData = results;
-    render('#latestRow',results);
-    $('#latestTitle').textContent='Hasil pencarian';
-    $('#empty').style.display=results.length?'none':'block';
-  }catch(e){toast('Pencarian gagal')}
+    const r = await api('search', {category_p: provider, query: q, limit: 20, page: 1, lang: 'id'});
+    const results = r.data || [];
+    
+    // Tampilkan hasil pencarian di section latest/trending
+    render('#latestRow', results);
+    $('#latestTitle').textContent = `Hasil Pencarian: "${q}"`;
+    $('#empty').style.display = results.length ? 'none' : 'block';
+  }catch(e){
+    toast('Pencarian gagal dilakukan');
+  }finally{
+    $('#loading').style.display='none';
+  }
+}
+
+function handleSearchInput(val){
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    search(val);
+  }, 400);
 }
 
 async function showAllTrending(){
@@ -236,7 +257,11 @@ function goHome(){
   $('#allContent').style.display='none';
   $('#homeContent').style.display='block';
   $('#heroSection').style.display='flex';
+  $('#searchInput').value = '';
+  $('#latestTitle').textContent = '✨ Drama Terbaru';
+  $('#empty').style.display = 'none';
   window.scrollTo({top:0, behavior:'smooth'});
+  loadProvider(provider);
 }
 
 async function openDetail(d){
@@ -306,7 +331,6 @@ async function playEpisode(i){
 
     if (window.hlsPlayer) window.hlsPlayer.destroy();
 
-    // BERSIHKAN SEMUA SUBTITLE/TRACK LAMA AGAR TIDAK MENUMPUK
     v.querySelectorAll('track').forEach(track => track.remove());
 
     if (finalStreamUrl.includes('.m3u8') && typeof Hls !== 'undefined' && Hls.isSupported()) {
@@ -348,7 +372,6 @@ async function playEpisode(i){
     
     $('#playerQuality').textContent=stream.quality||'Auto';
     
-    // PASANG SUBTITLE BARU JIKA ADA
     if(r.data?.subtitles?.[0]?.url){
       const tr=document.createElement('track');
       tr.kind='subtitles';tr.label='Indonesia';tr.srclang='id';
@@ -376,7 +399,7 @@ function closeModal(id){
 
 function init(){
   $('#platforms').innerHTML=providers.map((p,i)=>`<button class="platform ${i===0?'active':''}" onclick="setProvider('${p}',this)">${p}</button>`).join('');
-  $('#searchInput').addEventListener('input',e=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>search(e.target.value),350)});loadHome();
+  loadHome();
 }
 window.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal('#detailModal');closeModal('#playerModal')}});init();
 </script>
