@@ -19,7 +19,7 @@ footer{border-top:1px solid #181818;padding:28px 5%;color:#666;font-size:11px;di
 <body>
 <div class="app" id="app">
 <header class="nav"><div class="brand">DRAM<span>ORA</span><i>+</i></div><nav class="navlinks"><button class="active" onclick="scrollTo(0,0)">Home</button><button onclick="document.getElementById('trending').scrollIntoView()">Trending</button><button onclick="document.getElementById('latest').scrollIntoView()">Terbaru</button><button onclick="showToast('My List siap dihubungkan ke localStorage / akun pengguna.')">My List</button></nav><div class="spacer"></div><label class="search"><span>⌕</span><input id="searchInput" placeholder="Cari drama..." oninput="doSearch(this.value)"></label><div class="avatar">T</div></header>
-<section class="hero"><div class="hero-art"><div class="hero-orb"></div></div><div class="hero-copy"><div class="eyebrow">Featured Short Drama · 01</div><h1>The Last Promise</h1><div class="meta"><span>2026</span><b>•</b><span class="pill">Romance</span><span class="pill">72 Episodes</span><span>★ 9.4</span></div><p>Ketika janji masa lalu kembali menghantui, dua orang yang seharusnya saling melupakan justru dipertemukan lagi. Sebuah kisah cinta singkat dengan episode yang bikin susah berhenti.</p><div class="actions"><button class="primary" onclick="openPlayer('The Last Promise','Episode 1')">▶ Mulai Nonton</button><button class="secondary" onclick="openDetail(0)">＋ Detail</button></div></div></section>
+<section class="hero"><div class="hero-art"><div class="hero-orb"></div></div><div class="hero-copy"><div class="eyebrow">Featured Short Drama · 01</div><h1>The Last Promise</h1><div class="meta"><span>2026</span><b>•</b><span class="pill">Romance</span><span class="pill">72 Episodes</span><span>★ 9.4</span></div><p>Ketika janji masa lalu kembali menghantui, dua orang yang seharusnya saling melupakan justru dipertemukan lagi. Sebuah kisah cinta singkat dengan episode yang bikin susah berhenti.</p><div class="actions"><button class="primary" onclick="toast('Silakan pilih drama dari daftar di bawah.')">▶ Mulai Nonton</button><button class="secondary" onclick="toast('Pilih drama dari daftar di bawah.')">＋ Detail</button></div></div></section>
 <main>
 <section class="section"><div class="section-head"><h2>Platform</h2><span class="more">40+ sumber konten</span></div><div class="platforms" id="platforms"></div></section>
 <section class="section" id="trending"><div class="section-head"><h2 id="trendingTitle">🔥 Sedang Trending</h2><span class="more">Lihat semua →</span></div><div class="row" id="trendingRow"></div></section>
@@ -28,8 +28,8 @@ footer{border-top:1px solid #181818;padding:28px 5%;color:#666;font-size:11px;di
 <section class="section"><div class="section-head"><h2>💗 Untuk Kamu</h2><span class="more">Berdasarkan tontonanmu</span></div><div class="row" id="forYouRow"></div></section>
 </main><footer><span>© 2026 DRAMORA · Short Drama Streaming</span><span>Data & playback dapat dihubungkan ke QuickPlay API</span></footer>
 </div>
-<div class="modal" id="detailModal"><div class="dialog"><button class="close" onclick="closeModal('detailModal')">×</button><div class="detail"><div class="detail-poster" id="detailPoster"></div><div><div class="eyebrow">Short Drama</div><h2 id="detailTitle"></h2><div class="meta" id="detailMeta"></div><p id="detailDesc"></p><div class="chips" id="detailChips"></div><button class="primary" onclick="openPlayer(currentTitle,'Episode 1')">▶ Mulai Episode 1</button></div></div><div class="episodes"><h3>Daftar Episode</h3><div class="ep-grid" id="episodeGrid"></div></div></div></div>
-<div class="modal" id="playerModal"><div class="player"><button class="close" onclick="closeModal('playerModal')">×</button><div class="screen"><video id="video" playsinline controls></video><div id="videoStatus" class="fake-sub">Pilih episode</div></div><div class="playerbar"><span>LIVE API</span><div class="bar"><i></i></div><span>HLS / MP4</span></div><div class="video-title" id="playerTitle">The Last Promise · Episode 1</div></div></div>
+<div class="modal" id="detailModal"><div class="dialog"><button class="close" onclick="closeModal('#detailModal')">×</button><div class="detail"><div class="detail-poster" id="detailPoster"></div><div><div class="eyebrow">Short Drama</div><h2 id="detailTitle"></h2><div class="meta" id="detailMeta"></div><p id="detailDesc"></p><div class="chips" id="detailChips"></div><button class="primary" onclick="playFirstEpisode()">▶ Mulai Episode 1</button></div></div><div class="episodes"><h3>Daftar Episode</h3><div class="ep-grid" id="episodeGrid"></div></div></div></div>
+<div class="modal" id="playerModal"><div class="player"><button class="close" onclick="closeModal('#playerModal')">×</button><div class="screen"><video id="video" playsinline controls></video><div id="videoStatus" class="fake-sub">Pilih episode</div></div><div class="playerbar"><span>LIVE API</span><div class="bar"><i></i></div><span>HLS / MP4</span></div><div class="video-title" id="playerTitle">The Last Promise · Episode 1</div></div></div>
 <div class="toast" id="toast"></div>
 <script>
 const API='/api/quickplay';
@@ -40,8 +40,15 @@ async function api(path,params={}){const u=new URL(API,location.origin);u.search
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(window.__t);window.__t=setTimeout(()=>t.classList.remove('show'),2200)}
 function art(title='Drama'){let h=0;for(const c of title)h=(h*31+c.charCodeAt(0))>>>0;return `linear-gradient(145deg,hsl(${h%360} 35% 12%),hsl(${(h+55)%360} 55% 34%) 52%,hsl(${(h+110)%360} 62% 66%))`}
 function normalize(x){return [x.title||'Untitled',x.genres?.[0]||'Drama',x.cover||'',x.id,x.total_episodes||x.chapters||0,x.synopsis||'',x.status||'Ongoing',x.views||'']}
-function card(x){const d=normalize(x);return `<article class="card" onclick='openDetail(${JSON.stringify(d)})'><div class="poster"><div class="poster-art" style="--art:${d[2]?`url("${esc(d[2])}") center/cover`:art(d[0])}"></div><span class="rating">${esc(d[6])}</span><div class="poster-title">${esc(d[0])}</div></div><div class="card-info"><strong>${esc(d[0])}</strong><small>${esc(d[1])} · ${d[4]||'?'} eps</small></div></article>`}
+
+// Perbaikan 1: Gunakan https:// dan jangan escape URL untuk style background agar tidak merusak format url CSS
+function card(x){
+  const d=normalize(x);
+  const bg = d[2] ? `url('${d[2].replace(/^http:\/\//i, 'https://')}') center/cover` : art(d[0]);
+  return `<article class="card" onclick='openDetail(${JSON.stringify(d)})'><div class="poster"><div class="poster-art" style="--art:${bg}"></div><span class="rating">${esc(d[6])}</span><div class="poster-title">${esc(d[0])}</div></div><div class="card-info"><strong>${esc(d[0])}</strong><small>${esc(d[1])} · ${d[4]||'?'} eps</small></div></article>`
+}
 function render(id,data){$(id).innerHTML=(data||[]).map(card).join('')||'<div class="empty" style="display:block">Belum ada drama.</div>'}
+
 async function loadHome(){
   $('#loading').style.display='block';
   try{const chunks=await Promise.all(providers.slice(0,4).map(p=>api('discover',{category_p:p,limit:12,page:1,lang:'id'}).catch(()=>({data:[]}))));
@@ -52,9 +59,72 @@ async function loadHome(){
 function setProvider(p,el){provider=p;document.querySelectorAll('.platform').forEach(x=>x.classList.remove('active'));el.classList.add('active');loadProvider(p)}
 async function loadProvider(p){try{const r=await api('discover',{category_p:p,limit:18,page:1,lang:'id'});render('#trendingRow',r.data||[]);$('#trendingTitle').textContent='🔥 '+p+' · Discover'}catch(e){toast('Provider gagal dimuat')}}
 async function search(q){if(!q.trim()){loadHome();return}try{const rs=await Promise.all(providers.slice(0,5).map(p=>api('search',{category_p:p,query:q,limit:8,page:1,lang:'id'}).catch(()=>({data:[]}))));render('#latestRow',rs.flatMap(x=>x.data||[]));$('#latestTitle').textContent='Hasil pencarian';$('#empty').style.display='none'}catch(e){toast('Pencarian gagal')}}
-async function openDetail(d){currentDrama={id:d[3],title:d[0],cover:d[2],genre:d[1],episodes:d[4],synopsis:d[5],status:d[6],views:d[7]};$('#detailTitle').textContent=d[0];$('#detailPoster').style.background=d[2]?`url("${d[2]}") center/cover`:art(d[0]);$('#detailMeta').innerHTML=`<span>${esc(d[6])}</span><b>•</b><span class="pill">${esc(d[1])}</span><span>${d[4]||'?'} Episodes</span><span>${esc(d[7])}</span>`;$('#detailDesc').textContent=d[5]||'Nikmati drama pendek dengan alur cepat dan episode singkat.';$('#detailModal').classList.add('show');$('#episodeGrid').innerHTML='<span style="color:#777;font-size:12px">Memuat episode…</span>';try{const r=await api('detail',{category_p:provider,id:d[3],lang:'id'});currentEpisodes=r.data?.chapters||r.data?.episodes||[];$('#episodeGrid').innerHTML=currentEpisodes.map((e,i)=>`<button class="ep ${i===0?'current':''}" onclick="playEpisode(${i})">EP ${e.index||i+1}</button>`).join('')}catch(e){$('#episodeGrid').innerHTML='<span style="color:#777;font-size:12px">Episode tidak tersedia.</span>'}}
-async function playEpisode(i){const e=currentEpisodes[i];if(!e)return;currentIndex=i;closeModal('detailModal');$('#playerModal').classList.add('show');$('#playerTitle').textContent=`${currentDrama.title} · Episode ${e.index||i+1}`;$('#videoStatus').textContent='Mengambil stream…';try{const r=await api('video',{category_p:provider,id:currentDrama.id,chapterId:e.id,lang:'id'});const stream=(r.data?.streams||[]).find(x=>/1080|720|480|360/.test(x.quality||''))||r.data?.streams?.[0];if(!stream?.url)throw Error('No stream');const v=$('#video');v.src=stream.url;v.controls=true;v.poster=currentDrama.cover||'';v.play().catch(()=>{});$('#videoStatus').textContent=stream.quality||'Auto';if(r.data?.subtitles?.[0]?.url){const tr=document.createElement('track');tr.kind='subtitles';tr.label='Indonesia';tr.srclang='id';tr.src=r.data.subtitles[0].url;v.appendChild(tr)}}catch(e){$('#videoStatus').textContent='Stream tidak tersedia';toast('Video gagal dimuat')}}
-function closeModal(id){$(id).classList.remove('show');if(id==='#playerModal'){const v=$('#video');v.pause();v.removeAttribute('src');v.load();v.innerHTML=''}}
+
+// Perbaikan 1 (lanjutan): Penanganan gambar pada Popup Detail Modal
+async function openDetail(d){
+  currentDrama={id:d[3],title:d[0],cover:d[2],genre:d[1],episodes:d[4],synopsis:d[5],status:d[6],views:d[7]};
+  $('#detailTitle').textContent=d[0];
+  const bg = d[2] ? `url('${d[2].replace(/^http:\/\//i, 'https://')}') center/cover` : art(d[0]);
+  $('#detailPoster').style.background = bg;
+  $('#detailMeta').innerHTML=`<span>${esc(d[6])}</span><b>•</b><span class="pill">${esc(d[1])}</span><span>${d[4]||'?'} Episodes</span><span>${esc(d[7])}</span>`;
+  $('#detailDesc').textContent=d[5]||'Nikmati drama pendek dengan alur cepat dan episode singkat.';
+  $('#detailModal').classList.add('show');
+  $('#episodeGrid').innerHTML='<span style="color:#777;font-size:12px">Memuat episode…</span>';
+  try{
+    const r=await api('detail',{category_p:provider,id:d[3],lang:'id'});
+    currentEpisodes=r.data?.chapters||r.data?.episodes||[];
+    $('#episodeGrid').innerHTML=currentEpisodes.map((e,i)=>`<button class="ep ${i===0?'current':''}" onclick="playEpisode(${i})">EP ${e.index||i+1}</button>`).join('')
+  }catch(e){
+    $('#episodeGrid').innerHTML='<span style="color:#777;font-size:12px">Episode tidak tersedia.</span>'
+  }
+}
+
+// Perbaikan 2: Fungsi pembantu untuk memutar episode 1 saat menekan "Mulai Episode 1"
+function playFirstEpisode() {
+  if (currentEpisodes && currentEpisodes.length > 0) {
+    playEpisode(0);
+  } else {
+    toast('Episode belum tersedia / masih memuat.');
+  }
+}
+
+// Perbaikan 3: Menyesuaikan parameter closeModal dengan penambahan selector '#'
+async function playEpisode(i){
+  const e=currentEpisodes[i];
+  if(!e)return;
+  currentIndex=i;
+  closeModal('#detailModal'); 
+  $('#playerModal').classList.add('show');
+  $('#playerTitle').textContent=`${currentDrama.title} · Episode ${e.index||i+1}`;
+  $('#videoStatus').textContent='Mengambil stream…';
+  try{
+    const r=await api('video',{category_p:provider,id:currentDrama.id,chapterId:e.id,lang:'id'});
+    const stream=(r.data?.streams||[]).find(x=>/1080|720|480|360/.test(x.quality||''))||r.data?.streams?.[0];
+    if(!stream?.url)throw Error('No stream');
+    const v=$('#video');
+    v.src=stream.url;v.controls=true;v.poster=currentDrama.cover||'';
+    v.play().catch(()=>{});
+    $('#videoStatus').textContent=stream.quality||'Auto';
+    if(r.data?.subtitles?.[0]?.url){
+      const tr=document.createElement('track');
+      tr.kind='subtitles';tr.label='Indonesia';tr.srclang='id';
+      tr.src=r.data.subtitles[0].url;v.appendChild(tr)
+    }
+  }catch(e){
+    $('#videoStatus').textContent='Stream tidak tersedia';
+    toast('Video gagal dimuat')
+  }
+}
+
+function closeModal(id){
+  const el = $(id);
+  if (el) el.classList.remove('show');
+  if(id==='#playerModal'){
+    const v=$('#video');
+    v.pause();v.removeAttribute('src');v.load();v.innerHTML=''
+  }
+}
+
 function init(){
   $('#platforms').innerHTML=providers.map((p,i)=>`<button class="platform ${i===0?'active':''}" onclick="setProvider('${p}',this)">${p}</button>`).join('');
   $('#searchInput').addEventListener('input',e=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>search(e.target.value),350)});loadHome();
