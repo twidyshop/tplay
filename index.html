@@ -216,7 +216,6 @@ async function search(q){
   }catch(e){toast('Pencarian gagal')}
 }
 
-// FUNGSI TAMPILKAN SEMUA (LIHAT SEMUA)
 async function showAllTrending(){
   $('#homeContent').style.display='none';
   $('#heroSection').style.display='none';
@@ -307,6 +306,9 @@ async function playEpisode(i){
 
     if (window.hlsPlayer) window.hlsPlayer.destroy();
 
+    // BERSIHKAN SEMUA SUBTITLE/TRACK LAMA AGAR TIDAK MENUMPUK
+    v.querySelectorAll('track').forEach(track => track.remove());
+
     if (finalStreamUrl.includes('.m3u8') && typeof Hls !== 'undefined' && Hls.isSupported()) {
       const hls = new Hls({ maxBufferLength: 30, enableWorker: true });
       window.hlsPlayer = hls; 
@@ -345,10 +347,14 @@ async function playEpisode(i){
     }
     
     $('#playerQuality').textContent=stream.quality||'Auto';
+    
+    // PASANG SUBTITLE BARU JIKA ADA
     if(r.data?.subtitles?.[0]?.url){
       const tr=document.createElement('track');
       tr.kind='subtitles';tr.label='Indonesia';tr.srclang='id';
-      tr.src=r.data.subtitles[0].url;v.appendChild(tr)
+      tr.src=r.data.subtitles[0].url;
+      tr.default = true;
+      v.appendChild(tr);
     }
   }catch(err){
     loader.style.visibility = 'hidden';
