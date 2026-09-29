@@ -19,7 +19,7 @@ main{padding:0 5% 70px;position:relative;z-index:3}.section{margin-top:25px}.sec
 /* MODAL CSS */
 .modal{position:fixed;inset:0;background:#000b;backdrop-filter:blur(18px);z-index:50;display:none;align-items:center;justify-content:center;padding:25px}.modal.show{display:flex}.dialog{width:min(1050px,100%);max-height:92vh;overflow:auto;background:#0d0d0d;border:1px solid #262626;border-radius:16px;box-shadow:var(--shadow);position:relative}.close{position:absolute;right:15px;top:15px;width:36px;height:36px;border-radius:50%;background:#171717;color:#fff;z-index:50;display:grid;place-items:center;font-size:18px}.detail{display:grid;grid-template-columns:280px 1fr;gap:30px;padding:30px}.detail-poster{aspect-ratio:2/3;border-radius:10px;background:var(--art);background-size:cover}.detail h2{font-size:35px;letter-spacing:-1.7px;margin:30px 0 12px}.detail p{color:#999;line-height:1.7;font-size:13px}.chips{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0}.chip{border:1px solid #2b2b2b;border-radius:5px;padding:5px 8px;color:#aaa;font-size:10px}.episodes{border-top:1px solid #242424;padding:20px 30px 30px}.episodes h3{font-size:14px;margin:0 0 13px}.ep-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:7px}.ep{padding:10px 6px;border:1px solid #282828;background:#141414;color:#bbb;border-radius:7px;font-size:11px}.ep:hover,.ep.current{background:#fff;color:#080808;border-color:#fff}
 
-/* PLAYER CSS */
+/* PLAYER CSS YANG SUDAH DIPERBAIKI (TIDAK REBUTAN TEMPAT) */
 .player{width:min(1050px,100%);background:#000;border-radius:14px;overflow:hidden;border:1px solid #262626;display:flex;flex-direction:column;max-height:95vh;}
 .screen{width:100%;flex:1;min-height:50vh;background:#000;position:relative;display:flex;justify-content:center;align-items:center;}.screen:before{content:"TPLAY";position:absolute;top:18px;left:20px;font-weight:900;letter-spacing:1px;z-index:10;color:rgba(255,255,255,0.4)}
 .screen video, .screen .video-js{width:100%!important;height:100%!important;position:absolute;inset:0;object-fit:contain;}
@@ -27,18 +27,21 @@ main{padding:0 5% 70px;position:relative;z-index:3}.section{margin-top:25px}.sec
 .nav-ep:hover{background:var(--accent)}
 .nav-ep.left{left:15px}
 .nav-ep.right{right:15px}
-.player-eps-container{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:10px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
-.player-eps{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scroll-behavior:smooth;flex:1;}
+
+/* PLAYER MODES DIPINDAH KE ATAS / SEJAJAR JUDUL AGAR AMAN */
+.player-topbar{background:#0d0d0d;border-bottom:1px solid #1a1a1a;padding:8px 18px;display:flex;align-items:center;justify-content:space-between;}
+.player-modes{display:flex;gap:5px;}
+.pmode{background:#151515;border:1px solid #333;color:#aaa;padding:4px 8px;border-radius:4px;font-size:10px;font-weight:700;}
+.pmode.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+.player-eps-container{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:12px 18px;}
+.player-eps{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scroll-behavior:smooth;}
 .player-eps::-webkit-scrollbar{height:4px;}
 .player-eps::-webkit-scrollbar-thumb{background:#333;border-radius:4px;}
 
-.player-modes{display:flex;gap:5px;flex-wrap:wrap;}
-.pmode{background:#151515;border:1px solid #333;color:#aaa;padding:5px 8px;border-radius:5px;font-size:10px;font-weight:700;}
-.pmode.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-
 .pep{flex:none;padding:8px 14px;background:#151515;border:1px solid #252525;border-radius:6px;color:#aaa;font-size:11px;font-weight:600;}
 .pep.active{background:#fff;color:#000;border-color:#fff;}
-.playerbar{padding:12px 18px;display:flex;gap:10px;align-items:center;background:#050505;}.playerbar span{color:#999;font-size:11px}.bar{height:3px;background:#292929;flex:1;border-radius:3px;overflow:hidden;}.bar i{display:block;width:100%;height:100%;background:var(--accent);animation:pulse 2s infinite;transform-origin:left;}.video-title{padding:0 18px 14px;font-weight:800;font-size:15px;background:#050505;}
+.playerbar{padding:10px 18px;display:flex;gap:10px;align-items:center;background:#050505;}.playerbar span{color:#999;font-size:11px}.bar{height:3px;background:#292929;flex:1;border-radius:3px;overflow:hidden;}.bar i{display:block;width:100%;height:100%;background:var(--accent);animation:pulse 2s infinite;transform-origin:left;}.video-title{padding:0 18px 10px;font-weight:800;font-size:14px;background:#050505;}
 
 @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
@@ -62,8 +65,8 @@ video::-webkit-media-text-track-container { bottom: 22% !important; font-size: 1
   .screen{flex:1;min-height:0;} 
   .close{top:15px;right:15px;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);z-index:99;}
   .player-eps-container{padding:8px 12px;}
-  .video-title{padding:0 12px 10px;font-size:13px;}
-  .playerbar{padding:10px 12px;}
+  .video-title{padding:0 12px 8px;font-size:12px;}
+  .playerbar{padding:8px 12px;}
   .nav-ep{width:36px;height:36px;font-size:14px;}
   video::-webkit-media-text-track-container { bottom: 25% !important; font-size: 14px !important; }
 }
@@ -94,7 +97,7 @@ video::-webkit-media-text-track-container { bottom: 22% !important; font-size: 1
   <section class="section" id="trendingSec"><div class="section-head"><h2 id="trendingTitle">🔥 Sedang Trending</h2><span class="more" onclick="showAllTrending()">Lihat semua →</span></div><div class="row" id="trendingRow"></div></section>
   <section class="section"><div class="section-head"><h2>▶ Lanjut Nonton</h2><span class="more">Riwayat kamu</span></div><div class="continue"><div class="mini" style="--art:linear-gradient(145deg,#1d263f,#ad3858 55%,#f3b37d)"></div><div class="continue-info"><strong>The Contract Wife</strong><p>Episode 14 · tersisa 08:42</p><div class="progress"><i></i></div></div></div></section>
   <section class="section" id="latestSec"><div class="section-head"><h2 id="latestTitle">✨ Drama Terbaru</h2><span class="more">Update hari ini</span></div><div class="row" id="latestRow"></div><div class="empty" id="empty">Drama tidak ditemukan.</div><div id="loading" style="display:none;color:#777;font-size:11px;padding:18px 0">Memuat katalog…</div></section>
-  <section class="section"><div class="section-head"><h2>💗 Untuk Kamu</h2><span class="more">Berdasarkan tontonanmu</span></div><div class="row" id="forYouRow"></div></section>
+  <section class="section" id="forYouSec"><div class="section-head"><h2>💗 Untuk Kamu</h2><span class="more">Berdasarkan tontonanmu</span></div><div class="row" id="forYouRow"></div></section>
 </div>
 
 <div id="allContent" style="display:none;">
@@ -115,32 +118,35 @@ video::-webkit-media-text-track-container { bottom: 22% !important; font-size: 1
 <div class="modal" id="playerModal">
   <div class="player">
     <button class="close" onclick="closeModal('#playerModal')">×</button>
+    
+    <!-- PLAYER TOPBAR: Opsi Player dipindah ke atas biar tidak rebutan tempat -->
+    <div class="player-topbar">
+      <span class="video-title" id="playerTitle" style="padding:0; background:none;">Memuat episode...</span>
+      <div class="player-modes">
+        <button class="pmode active" id="modeHls" onclick="setPlayerMode('hls')">P1 (HLS)</button>
+        <button class="pmode" id="modeNative" onclick="setPlayerMode('native')">P2 (Direct)</button>
+        <button class="pmode" id="modeVjs" onclick="setPlayerMode('vjs')">P3 (VJS)</button>
+      </div>
+    </div>
+
     <div class="screen">
-      <!-- Tag video standar untuk Player 1 & 2 -->
       <video id="video" playsinline controls style="display:block;"></video>
-      <!-- Tag video khusus untuk Player 3 (Video.js) -->
       <video id="videojs-player" class="video-js vjs-big-play-centered" playsinline style="display:none;"></video>
 
       <button id="btnPrevEp" class="nav-ep left" onclick="playPrevEp()" style="display:none;">❮</button>
       <button id="btnNextEp" class="nav-ep right" onclick="playNextEp()" style="display:none;">❯</button>
     </div>
     
+    <!-- LIST EPISODE DI BAWAH AMAN TIDAK KETUTUPAN -->
     <div class="player-eps-container">
       <div class="player-eps" id="playerEpList"></div>
-      <div class="player-modes">
-        <button class="pmode active" id="modeHls" onclick="setPlayerMode('hls')">Player 1 (HLS)</button>
-        <button class="pmode" id="modeNative" onclick="setPlayerMode('native')">Player 2 (Direct)</button>
-        <button class="pmode" id="modeVjs" onclick="setPlayerMode('vjs')">Player 3 (Video.js)</button>
-      </div>
     </div>
     
     <div class="playerbar"><span>LIVE API</span><div class="bar" id="loadingBar" style="visibility:hidden"><i></i></div><span id="playerQuality">Auto</span></div>
-    <div class="video-title" id="playerTitle">Memuat episode...</div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
 
-<!-- HLS.js & Video.js Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 
@@ -149,7 +155,8 @@ const API='/api/quickplay';
 const providers=['meloshort', 'freereels', 'stardusttv', 'microdrama', 'reelshort'];
 let provider='meloshort', currentDrama=null, currentEpisodes=[], currentIndex=0, searchTimer;
 let globalMasterList = [];
-let currentPlayerMode = 'hls'; // 'hls', 'native', atau 'vjs'
+let platformCache = {}; // Cache agar pindah platform langsung instan tanpa lemot
+let currentPlayerMode = 'hls';
 let currentStreamUrl = '';
 let currentSubUrl = '';
 let vjsPlayerInstance = null;
@@ -202,9 +209,16 @@ function updateHeroBanner(topDrama) {
 async function loadHome(){
   $('#loading').style.display='block';
   try{
+    if (platformCache['home']) {
+      globalMasterList = platformCache['home'];
+      renderHomeGrids(globalMasterList);
+      $('#loading').style.display='none';
+      return;
+    }
     const chunks=await Promise.all(providers.map(p=>api('discover',{category_p:p,limit:24,page:1,lang:'id'}).catch(()=>({data:[]}))));
     const all=chunks.flatMap(extractList); 
     const unique=[...new Map(all.map(x=>[x.id||x.drama_id||Math.random(),x])).values()];
+    platformCache['home'] = unique;
     globalMasterList = unique;
     if(unique.length > 0) updateHeroBanner(unique[0]);
     renderHomeGrids(unique);
@@ -214,12 +228,21 @@ async function loadHome(){
 async function loadProvider(p){
   $('#loading').style.display='block';
   try{
+    if (platformCache[p]) {
+      globalMasterList = platformCache[p];
+      renderHomeGrids(globalMasterList);
+      $('#trendingTitle').textContent='🔥 '+p+' · Trending';
+      $('#loading').style.display='none';
+      return;
+    }
     const r=await api('discover',{category_p:p,limit:30,page:1,lang:'id'});
-    globalMasterList = extractList(r);
+    const list = extractList(r);
+    platformCache[p] = list;
+    globalMasterList = list;
     renderHomeGrids(globalMasterList);
     $('#trendingTitle').textContent='🔥 '+p+' · Trending';
   }catch(e){
-    toast('Provider gagal dimuat');
+    toast('Provider gagal dimuat / kosong');
     globalMasterList = [];
     renderHomeGrids([]);
   }finally{$('#loading').style.display='none'}
@@ -380,13 +403,11 @@ function initPlayerStream(videoUrl, subUrl) {
   const v = $('#video');
   const vjsEl = $('#videojs-player');
 
-  // Bersihkan pemutar sebelumnya
   if (window.hlsPlayer) { window.hlsPlayer.destroy(); window.hlsPlayer = null; }
   if (vjsPlayerInstance) { vjsPlayerInstance.dispose(); vjsPlayerInstance = null; }
   v.querySelectorAll('track').forEach(track => track.remove());
 
   if (currentPlayerMode === 'vjs') {
-    // Mode Player 3: Video.js
     v.style.display = 'none';
     vjsEl.style.display = 'block';
 
@@ -414,7 +435,6 @@ function initPlayerStream(videoUrl, subUrl) {
     });
 
   } else {
-    // Mode Player 1 (HLS) & Player 2 (Direct)
     vjsEl.style.display = 'none';
     v.style.display = 'block';
 
