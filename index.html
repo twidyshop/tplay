@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
 <title>TPLAY — Short Drama</title>
 <style>
 :root{color-scheme:dark;--bg:#070707;--surface:#101010;--surface2:#171717;--text:#f6f6f6;--muted:#969696;--line:#242424;--accent:#ff315d;--accent2:#ff8a3d;--shadow:0 24px 70px rgba(0,0,0,.45)}
@@ -116,8 +117,9 @@ footer{border-top:1px solid #181818;padding:28px 5%;color:#666;font-size:11px;di
 
 <script>
 const API='/api/quickplay';
-const providers=['freereels','meloshort','shortmax'];
-let provider='freereels', currentDrama=null, currentEpisodes=[], currentIndex=0, searchTimer;
+// Daftar platform diperbarui sesuai paket Nano (5 platform)
+const providers=['stardusttv', 'meloshort', 'freereels', 'microdrama', 'reelshort'];
+let provider='stardusttv', currentDrama=null, currentEpisodes=[], currentIndex=0, searchTimer;
 const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 async function api(path,params={}){const u=new URL(API,location.origin);u.searchParams.set('path','/api/v2/'+path);Object.entries(params).forEach(([k,v])=>v!=null&&u.searchParams.set(k,v));const r=await fetch(u);if(!r.ok)throw Error('API '+r.status);return r.json()}
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(window.__t);window.__t=setTimeout(()=>t.classList.remove('show'),2200)}
@@ -243,7 +245,6 @@ async function playEpisode(i){
         v.play().catch(()=>{});
       });
       
-      // AUTO RECOVERY ERROR HANDLING DITAMBAHKAN DI SINI
       hls.on(Hls.Events.ERROR, function (event, data) {
         if (data.fatal) {
           switch (data.type) {
