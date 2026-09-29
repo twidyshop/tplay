@@ -19,7 +19,10 @@ main{padding:0 5% 70px;position:relative;z-index:3}.section{margin-top:25px}.sec
 
 /* PLAYER CSS UPDATE */
 .player{width:min(1050px,100%);background:#000;border-radius:14px;overflow:hidden;border:1px solid #262626;display:flex;flex-direction:column;max-height:95vh;}
-.screen{width:100%;flex:1;min-height:50vh;background:#000;position:relative;display:flex;justify-content:center;align-items:center;}.screen:before{content:"TPLAY";position:absolute;top:18px;left:20px;font-weight:900;letter-spacing:1px;z-index:10;color:rgba(255,255,255,0.4)}.screen .fake-sub{position:absolute;bottom:45px;background:#000b;padding:6px 10px;font-size:13px;z-index:10}
+.screen{width:100%;flex:1;min-height:50vh;background:#000;position:relative;display:flex;justify-content:center;align-items:center;}.screen:before{content:"TPLAY";position:absolute;top:18px;left:20px;font-weight:900;letter-spacing:1px;z-index:10;color:rgba(255,255,255,0.4)}
+/* CUSTOM SUBTITLE OVERLAY: Dinaikkan agar aman tidak terpotong */
+.screen .custom-sub{position:absolute;bottom:75px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.75);color:#fff;padding:6px 14px;font-size:14px;border-radius:6px;z-index:25;text-align:center;max-width:85%;line-height:1.4;pointer-events:none;display:none;backdrop-filter:blur(4px);box-shadow:0 4px 12px rgba(0,0,0,0.5)}
+
 .screen video{width:100%;height:100%;object-fit:contain;outline:none;}
 .nav-ep{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.6);color:#fff;border:none;width:44px;height:44px;border-radius:50%;font-size:18px;display:grid;place-items:center;cursor:pointer;z-index:20;backdrop-filter:blur(4px);transition:0.2s}
 .nav-ep:hover{background:var(--accent)}
@@ -40,7 +43,8 @@ footer{border-top:1px solid #181818;padding:28px 5%;color:#666;font-size:11px;di
 /* SUPER MOBILE FRIENDLY RESPONSIVE */
 @media(max-width:900px){.row{grid-template-columns:repeat(4,minmax(0,1fr))}.detail{grid-template-columns:180px 1fr}.ep-grid{grid-template-columns:repeat(6,1fr)}}
 @media(max-width:650px){
-  .nav{padding:0 18px;height:62px;gap:15px}.navlinks{display:none}.search{margin-left:auto;width:38px;padding:0 11px}.search input{display:none}.row{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+  /* DIPERBAIKI: Input search di HP dibikin tetap muncul dan bisa diketik */
+  .nav{padding:0 14px;height:62px;gap:10px}.navlinks{display:none}.search{width:160px;margin-left:auto;padding:0 10px}.search input{display:block}.row{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
   
   .hero{padding:70px 18px 25px;min-height:350px;align-items:flex-end;}
   .hero-orb{display:none;}
@@ -60,6 +64,7 @@ footer{border-top:1px solid #181818;padding:28px 5%;color:#666;font-size:11px;di
   .video-title{padding:0 12px 12px;font-size:13px;}
   .playerbar{padding:10px 12px;}
   .nav-ep{width:36px;height:36px;font-size:14px;}
+  .custom-sub{bottom:60px;font-size:12px;padding:4px 10px;}
 }
 </style>
 </head>
@@ -113,7 +118,8 @@ footer{border-top:1px solid #181818;padding:28px 5%;color:#666;font-size:11px;di
     <button class="close" onclick="closeModal('#playerModal')">×</button>
     <div class="screen">
       <video id="video" playsinline controls></video>
-      <div id="videoStatus" class="fake-sub" style="display:none;"></div>
+      <!-- CUSTOM SUBTITLE BOX -->
+      <div id="customSub" class="custom-sub"></div>
       <button id="btnPrevEp" class="nav-ep left" onclick="playPrevEp()" style="display:none;">❮</button>
       <button id="btnNextEp" class="nav-ep right" onclick="playNextEp()" style="display:none;">❯</button>
     </div>
@@ -135,7 +141,7 @@ footer{border-top:1px solid #181818;padding:28px 5%;color:#666;font-size:11px;di
 const API='/api/quickplay';
 const providers=['meloshort', 'freereels', 'stardusttv', 'microdrama', 'reelshort'];
 let provider='meloshort', currentDrama=null, currentEpisodes=[], currentIndex=0, searchTimer;
-let cachedAllData = [];
+let globalMasterList = []; // Menyimpan semua data cache untuk pencarian lokal instan
 
 const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 async function api(path,params={}){const u=new URL(API,location.origin);u.searchParams.set('path','/api/v2/'+path);Object.entries(params).forEach(([k,v])=>v!=null&&u.searchParams.set(k,v));const r=await fetch(u);if(!r.ok)throw Error('API '+r.status);return r.json()}
@@ -174,11 +180,10 @@ function updateHeroBanner(topDrama) {
 async function loadHome(){
   $('#loading').style.display='block';
   try{
-    // DIUBAH: Batas limit per platform diperbesar (dari 12 ke 24) agar data lebih banyak yang tertarik
     const chunks=await Promise.all(providers.map(p=>api('discover',{category_p:p,limit:24,page:1,lang:'id'}).catch(()=>({data:[]}))));
     const all=chunks.flatMap(x=>x.data||[]); 
     const unique=[...new Map(all.map(x=>[x.id,x])).values()];
-    cachedAllData = unique;
+    globalMasterList = unique;
     if(unique.length > 0) updateHeroBanner(unique[0]);
     render('#trendingRow',unique.slice(0,6)); 
     render('#latestRow',unique.slice(6,18)); 
@@ -189,10 +194,10 @@ async function loadHome(){
 async function loadProvider(p){
   try{
     const r=await api('discover',{category_p:p,limit:30,page:1,lang:'id'});
-    cachedAllData = r.data || [];
-    render('#trendingRow',cachedAllData.slice(0,6)); 
-    render('#latestRow',cachedAllData.slice(6,18));
-    render('#forYouRow',cachedAllData.slice(18,24));
+    globalMasterList = r.data || [];
+    render('#trendingRow',globalMasterList.slice(0,6)); 
+    render('#latestRow',globalMasterList.slice(6,18));
+    render('#forYouRow',globalMasterList.slice(18,24));
     $('#trendingTitle').textContent='🔥 '+p+' · Trending';
   }catch(e){toast('Provider gagal dimuat')}
 }
@@ -205,36 +210,28 @@ function setProvider(p,el){
   loadProvider(p);
 }
 
-// DIPERBAIKI: Fungsi Search yang lebih responsif dan mencakup platform aktif
-async function search(q){
-  q = q.trim();
-  if(!q){
-    goHome();
-    return;
-  }
-  
-  // Sembunyikan beranda utama / hero saat mencari agar hasil fokus
-  $('#loading').style.display='block';
-  try{
-    const r = await api('search', {category_p: provider, query: q, limit: 20, page: 1, lang: 'id'});
-    const results = r.data || [];
-    
-    // Tampilkan hasil pencarian di section latest/trending
-    render('#latestRow', results);
-    $('#latestTitle').textContent = `Hasil Pencarian: "${q}"`;
-    $('#empty').style.display = results.length ? 'none' : 'block';
-  }catch(e){
-    toast('Pencarian gagal dilakukan');
-  }finally{
-    $('#loading').style.display='none';
-  }
-}
-
+/* SISTEM PENCARIAN LOKAL (INSTAN & AKURAT) */
 function handleSearchInput(val){
   clearTimeout(searchTimer);
   searchTimer = setTimeout(() => {
-    search(val);
-  }, 400);
+    const q = val.trim().toLowerCase();
+    if(!q){
+      render('#latestRow', globalMasterList.slice(6,18));
+      $('#latestTitle').textContent = '✨ Drama Terbaru';
+      $('#empty').style.display = 'none';
+      return;
+    }
+    
+    // Filter instan berdasarkan judul yang mengandung kata kunci
+    const filtered = globalMasterList.filter(item => {
+      const title = (item.title || '').toLowerCase();
+      return title.includes(q);
+    });
+
+    render('#latestRow', filtered);
+    $('#latestTitle').textContent = `Hasil Pencarian: "${val}"`;
+    $('#empty').style.display = filtered.length ? 'none' : 'block';
+  }, 300);
 }
 
 async function showAllTrending(){
@@ -246,10 +243,10 @@ async function showAllTrending(){
   
   try {
     const r = await api('discover', {category_p: provider, limit: 50, page: 1, lang: 'id'});
-    const data = r.data || cachedAllData;
+    const data = r.data || globalMasterList;
     render('#allRow', data);
   } catch(e) {
-    render('#allRow', cachedAllData);
+    render('#allRow', globalMasterList);
   }
 }
 
@@ -261,7 +258,7 @@ function goHome(){
   $('#latestTitle').textContent = '✨ Drama Terbaru';
   $('#empty').style.display = 'none';
   window.scrollTo({top:0, behavior:'smooth'});
-  loadProvider(provider);
+  render('#latestRow', globalMasterList.slice(6,18));
 }
 
 async function openDetail(d){
@@ -314,7 +311,10 @@ async function playEpisode(i){
 
   const v=$('#video');
   const loader = $('#loadingBar');
+  const subBox = $('#customSub');
   loader.style.visibility = 'visible'; 
+  subBox.style.display = 'none';
+  subBox.textContent = '';
   
   try{
     const r=await api('video',{category_p:provider,id:currentDrama.id,chapterId:e.id,lang:'id'});
@@ -326,11 +326,9 @@ async function playEpisode(i){
     
     v.poster=currentDrama.cover||'';
     v.controls=true;
-
     v.onended = () => { playNextEp(); };
 
     if (window.hlsPlayer) window.hlsPlayer.destroy();
-
     v.querySelectorAll('track').forEach(track => track.remove());
 
     if (finalStreamUrl.includes('.m3u8') && typeof Hls !== 'undefined' && Hls.isSupported()) {
@@ -348,17 +346,13 @@ async function playEpisode(i){
         if (data.fatal) {
           switch (data.type) {
             case Hls.ErrorTypes.NETWORK_ERROR:
-              console.warn("Koneksi tersendat, mencoba menyambung ulang...");
               hls.startLoad();
-              toast('Koneksi server tersendat, menyambung ulang...');
               break;
             case Hls.ErrorTypes.MEDIA_ERROR:
-              console.warn("Error media, mencoba pemulihan...");
               hls.recoverMediaError();
               break;
             default:
               hls.destroy();
-              toast('Gagal memuat video dari server pusat.');
               loader.style.visibility = 'hidden';
               break;
           }
@@ -372,17 +366,58 @@ async function playEpisode(i){
     
     $('#playerQuality').textContent=stream.quality||'Auto';
     
+    // FETCH CUSTOM SUBTITLE RENDERER (Agar tampil rapi di semua tablet/HP & tidak mepet)
     if(r.data?.subtitles?.[0]?.url){
-      const tr=document.createElement('track');
-      tr.kind='subtitles';tr.label='Indonesia';tr.srclang='id';
-      tr.src=r.data.subtitles[0].url;
-      tr.default = true;
-      v.appendChild(tr);
+      const subUrl = r.data.subtitles[0].url;
+      fetch(proxyBase + encodeURIComponent(subUrl))
+        .then(res => res.text())
+        .then(vttText => {
+          parseAndBindSubtitles(vttText, v, subBox);
+        })
+        .catch(() => {});
     }
   }catch(err){
     loader.style.visibility = 'hidden';
     toast('Video gagal dimuat (cek koneksi)');
   }
+}
+
+// Parser sederhana untuk file VTT agar subtitle tampil di Custom Box
+function parseAndBindSubtitles(vttText, videoEl, subBoxEl) {
+  const cues = [];
+  const lines = vttText.split(/\r?\n/);
+  let currentCue = null;
+
+  for (let line of lines) {
+    line = line.trim();
+    if (line.includes('-->')) {
+      const parts = line.split('-->');
+      const parseTime = t => {
+        const p = t.trim().split(':');
+        if (p.length === 3) return parseFloat(p[0])*3600 + parseFloat(p[1])*60 + parseFloat(p[2].replace(',', '.'));
+        if (p.length === 2) return parseFloat(p[0])*60 + parseFloat(p[1].replace(',', '.'));
+        return 0;
+      };
+      currentCue = { start: parseTime(parts[0]), end: parseTime(parts[1].split(' ')[0]), text: '' };
+    } else if (currentCue && line === '') {
+      cues.push(currentCue);
+      currentCue = null;
+    } else if (currentCue) {
+      currentCue.text += (currentCue.text ? '\n' : '') + line.replace(/<[^>]*>/g, '');
+    }
+  }
+  if (currentCue) cues.push(currentCue);
+
+  videoEl.ontimeupdate = () => {
+    const ct = videoEl.currentTime;
+    const active = cues.find(c => ct >= c.start && ct <= c.end);
+    if (active) {
+      subBoxEl.textContent = active.text;
+      subBoxEl.style.display = 'block';
+    } else {
+      subBoxEl.style.display = 'none';
+    }
+  };
 }
 
 function closeModal(id){
@@ -392,6 +427,8 @@ function closeModal(id){
     const v=$('#video');
     v.pause();v.removeAttribute('src');v.load();v.innerHTML='';
     v.onended = null;
+    v.ontimeupdate = null;
+    $('#customSub').style.display = 'none';
     $('#loadingBar').style.visibility = 'hidden';
     if (window.hlsPlayer) { window.hlsPlayer.destroy(); window.hlsPlayer = null; }
   }
