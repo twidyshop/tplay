@@ -117,8 +117,9 @@ footer{border-top:1px solid #181818;padding:28px 5%;color:#666;font-size:11px;di
 
 <script>
 const API='/api/quickplay';
-const providers=['stardusttv', 'meloshort', 'freereels', 'microdrama', 'reelshort'];
-let provider='stardusttv', currentDrama=null, currentEpisodes=[], currentIndex=0, searchTimer;
+// UPDATE: Memindah meloshort ke urutan pertama agar jadi default
+const providers=['meloshort', 'freereels', 'stardusttv', 'microdrama', 'reelshort'];
+let provider='meloshort', currentDrama=null, currentEpisodes=[], currentIndex=0, searchTimer;
 const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 async function api(path,params={}){const u=new URL(API,location.origin);u.searchParams.set('path','/api/v2/'+path);Object.entries(params).forEach(([k,v])=>v!=null&&u.searchParams.set(k,v));const r=await fetch(u);if(!r.ok)throw Error('API '+r.status);return r.json()}
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(window.__t);window.__t=setTimeout(()=>t.classList.remove('show'),2200)}
